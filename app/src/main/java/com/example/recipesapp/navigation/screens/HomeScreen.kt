@@ -20,6 +20,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -35,8 +37,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -68,6 +72,11 @@ fun SearchBar(
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     var searchText by remember { mutableStateOf("") }
+    var menuExpanded by remember { mutableStateOf(false) }
+
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp.dp
+    val offsetWidth = screenWidth - 60.dp  
 
     Row(modifier = Modifier.fillMaxWidth()) {
         OutlinedTextField(
@@ -92,13 +101,31 @@ fun SearchBar(
         )
 
         IconButton(
-            onClick = { },
+            onClick = { menuExpanded = !menuExpanded },
             modifier = Modifier.weight(0.2f)
         ) {
             Icon(imageVector = Icons.Default.MoreVert, contentDescription = "More options")
         }
+
+        DropdownMenu(
+            expanded = menuExpanded,
+            onDismissRequest = { menuExpanded = false },
+            offset = DpOffset(
+                x = offsetWidth, 
+                y = 20.dp         
+            )
+        ) {
+            DropdownMenuItem(onClick = {
+                menuExpanded = false
+            }, 
+                text = { Text(text = "vaors")}
+                ) 
+            // Agrega más opciones si lo necesitas
+        }
     }
 }
+
+
 
 @Composable
 fun RecommendationsComponent() {
@@ -179,7 +206,7 @@ fun RecipeCardComponent(
                 modifier = Modifier
                     .fillMaxHeight()
                     .width(80.dp)
-                    .background(Color.Cyan), // Usa un placeholder en lugar de una imagen real
+                    .background(Color.Cyan),
             )
 
             Spacer(modifier = Modifier.width(16.dp))
@@ -221,7 +248,7 @@ val receiptItems = listOf(
     "",
     "",
 )
-    
+
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
