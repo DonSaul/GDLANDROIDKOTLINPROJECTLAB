@@ -34,6 +34,11 @@ class MainActivity : ComponentActivity() {
                 "178d63d1ecc749af92d4180120d05054",
                 "Taco")
             println(recipes)
+
+            val recipeId = 716429
+            val apiKey = "178d63d1ecc749af92d4180120d05054"
+            val recipe = service.getRecipeInformation(recipeId, apiKey)
+            println(recipe)
         }
 
         setContent {
