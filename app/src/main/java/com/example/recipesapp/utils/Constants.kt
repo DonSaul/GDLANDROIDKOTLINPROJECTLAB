@@ -1,4 +1,4 @@
 package com.example.recipesapp.utils
 
 const val BASE_URL = "https://api.spoonacular.com/recipes/"
-const val API_KEY = "178d63d1ecc749af92d4180120d05054"
+const val API_KEY = "a2c4ac16a2af488987cc1960999946eb"

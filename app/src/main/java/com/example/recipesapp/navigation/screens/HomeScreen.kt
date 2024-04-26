@@ -14,12 +14,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -29,6 +31,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,31 +46,61 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.viewModel.RecipeViewModel
+import com.example.recipesapp.viewModel.State
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen() {
 
     val viewModel: RecipeViewModel = hiltViewModel()
+    val uiState = viewModel.state.collectAsState()
+    Column(modifier = Modifier.fillMaxSize()) {
+        when (uiState.value) {
+            is State.Loading -> {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CircularProgressIndicator()
+                    Text(text = "Loading")
+                }
+            }
 
-    Scaffold(
-        modifier = Modifier.padding(12.dp, 24.dp, 0.dp, 0.dp)
-    ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            SearchBar(
-                placeholder = "Search recipes...",
-            )
-            Text(
-                text = "Recomendaciones", modifier = Modifier.padding(start = 16.dp, top = 16.dp)
-            )
-            RecommendationsComponent()
-            Text(
-                text = "Recetas", modifier = Modifier.padding(start = 16.dp, top = 16.dp)
-            )
-            ReceiptsComponent()
+            is State.Error -> {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(text = "Error")
+                    Text(text = (uiState.value as State.Error).error)
+                }
+            }
+
+            is State.Success -> {
+                val data = (uiState.value as State.Success).data
+                Column(modifier = Modifier.fillMaxSize()) {
+                    SearchBar(
+                        placeholder = "Search recipes...",
+                    )
+                    Text(
+                        text = "Recomendaciones",
+                        modifier = Modifier.padding(start = 16.dp, top = 16.dp)
+                    )
+                    RecommendationsComponent()
+                    Text(
+                        text = "Recetas", modifier = Modifier.padding(start = 16.dp, top = 16.dp)
+                    )
+                    ReceiptsComponent()
+                }
+            }
         }
     }
+
+
 }
 
 @OptIn(ExperimentalComposeUiApi::class)

@@ -24,8 +24,8 @@ class NetworkModule {
         return context as RecipesApp
     }
 
-    @Singleton
     @Provides
+    @Singleton
     fun provideContext(@ApplicationContext context: Context): Context {
         return context
     }
@@ -43,14 +43,15 @@ class NetworkModule {
     @Singleton
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder().readTimeout(30L, java.util.concurrent.TimeUnit.SECONDS)
-            .writeTimeout(30L, java.util.concurrent.TimeUnit.SECONDS).build()
+        return OkHttpClient.Builder()
+            .readTimeout(30L, java.util.concurrent.TimeUnit.SECONDS)
+            .writeTimeout(30L, java.util.concurrent.TimeUnit.SECONDS)
+            .build()
     }
 
-    @Singleton
     @Provides
-    fun provideRecipesApi(retrofit: Retrofit): RecipesApi {
+    @Singleton
+    fun provideRecipeApi(retrofit: Retrofit): RecipesApi {
         return retrofit.create(RecipesApi::class.java)
     }
-
 }

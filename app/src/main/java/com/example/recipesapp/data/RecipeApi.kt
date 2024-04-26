@@ -28,6 +28,6 @@ interface RecipesApi {
         @Query("limitLicense") limitLicense: Boolean,
         @Query("tags") tags: String,
         @Query("number") number: Int,
-        @Query("apiKey") apiKey: String = API_KEY
+        @Query("apiKey") apiKey: String
     ): Response<RecipesArray>
 }
