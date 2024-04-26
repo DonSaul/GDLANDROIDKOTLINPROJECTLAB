@@ -104,3 +104,7 @@ data class ProductMatch(
     val score: Double,
     val link: String
 )
+
+data class RecipesArray(
+    val recipes: List<Recipe>
+)
