@@ -18,8 +18,11 @@ import com.example.recipesapp.components.TextField
 import com.example.recipesapp.data.RetrofitServiceFactory
 import com.example.recipesapp.model.Result
 import com.example.recipesapp.ui.theme.RecipesAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
