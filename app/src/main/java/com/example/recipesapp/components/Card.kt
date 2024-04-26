@@ -32,12 +32,12 @@ fun RecipeCardPreview() {
             imageType = "jpg",
             title = "Taco Egg Roll"
         )
-        recipeCard(recipe = recipe, action = {})
+        RecipeCard(recipe = recipe, action = {})
     }
 }
 
 @Composable
-fun recipeCard(recipe : Result, action: () -> Unit, modifier: Modifier = Modifier) {
+fun RecipeCard(recipe : Result, action: () -> Unit, modifier: Modifier = Modifier) {
     Card(
         shape = RoundedCornerShape(16.dp),
         modifier = Modifier.padding(10.dp,5.dp,10.dp,10.dp),
