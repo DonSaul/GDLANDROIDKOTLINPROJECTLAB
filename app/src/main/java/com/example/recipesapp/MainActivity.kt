@@ -1,5 +1,6 @@
 package com.example.recipesapp
 
+import HomeScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -27,7 +28,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val recipesState =  mutableStateOf<List<Result>>(emptyList())
+        val recipesState = mutableStateOf<List<Result>>(emptyList())
 
         val service = RetrofitServiceFactory.makeRetrofitService()
         lifecycleScope.launch {
@@ -41,16 +42,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             RecipesAppTheme {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    TextField(
-                        value = "", onChange = {}, label = "Lorem Ipsum",
-                        placeholder = "Lorem Ipsum", modifier = Modifier.size(20.dp)
-                    )
-                    ListRecipes(recipes = recipesState.value)
-                }
+                HomeScreen()
             }
         }
     }

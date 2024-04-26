@@ -42,11 +42,14 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.recipesapp.viewModel.RecipeViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen() {
 
+    val viewModel: RecipeViewModel = hiltViewModel()
 
     Scaffold(
         modifier = Modifier.padding(12.dp, 24.dp, 0.dp, 0.dp)
@@ -78,7 +81,7 @@ fun SearchBar(
 
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
-    val offsetWidth = screenWidth - 60.dp  
+    val offsetWidth = screenWidth - 60.dp
 
     Row(modifier = Modifier.fillMaxWidth()) {
         OutlinedTextField(
@@ -113,20 +116,19 @@ fun SearchBar(
             expanded = menuExpanded,
             onDismissRequest = { menuExpanded = false },
             offset = DpOffset(
-                x = offsetWidth, 
-                y = 20.dp         
+                x = offsetWidth,
+                y = 20.dp
             )
         ) {
             DropdownMenuItem(onClick = {
                 menuExpanded = false
-            }, 
-                text = { Text(text = "vaors")}
-                ) 
+            },
+                text = { Text(text = "vaors") }
+            )
             // Agrega más opciones si lo necesitas
         }
     }
 }
-
 
 
 @Composable

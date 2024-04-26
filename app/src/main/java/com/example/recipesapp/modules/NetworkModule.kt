@@ -1,7 +1,9 @@
-package com.example.recipesapp
+package com.example.recipesapp.modules
 
 import android.content.Context
+import com.example.recipesapp.RecipesApp
 import com.example.recipesapp.data.RecipesApi
+import com.example.recipesapp.utils.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,7 +35,7 @@ class NetworkModule {
     fun provideRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .client(client)
-            .baseUrl("https://api.spoonacular.com/recipes/")
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
