@@ -10,6 +10,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -43,8 +44,11 @@ class NetworkModule {
     @Singleton
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
+        val logging = HttpLoggingInterceptor()
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY)
         return OkHttpClient.Builder()
-            .readTimeout(30L, java.util.concurrent.TimeUnit.SECONDS)
+            .addInterceptor(logging)
+            .readTimeout(300L, java.util.concurrent.TimeUnit.SECONDS)
             .writeTimeout(30L, java.util.concurrent.TimeUnit.SECONDS)
             .build()
     }
