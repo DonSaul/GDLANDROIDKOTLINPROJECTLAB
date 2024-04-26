@@ -50,7 +50,7 @@ fun RecipeCard(recipe : Result, action: () -> Unit, modifier: Modifier = Modifie
     ) {
         Column(
             modifier = Modifier
-                .clickable {  }
+                .clickable { action }
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
