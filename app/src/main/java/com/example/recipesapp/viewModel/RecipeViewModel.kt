@@ -1,7 +1,43 @@
 package com.example.recipesapp.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.recipesapp.data.usecase.GetRandomRecipesUseCase
+import com.example.recipesapp.model.Recipe
+import com.example.recipesapp.model.RecipesArray
+import com.example.recipesapp.utils.API_KEY
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RecipeViewModel : ViewModel() {
-    
+@HiltViewModel
+class RecipeViewModel @Inject constructor(
+    private val getRandomRecipesUseCase: GetRandomRecipesUseCase
+) : ViewModel() {
+
+    private val _state = MutableStateFlow<State<RecipesArray>>(State.Loading)
+    val state = _state as StateFlow<State<RecipesArray>>
+
+    init {
+        viewModelScope.launch {
+           getRecipesRandom()
+        }
+    }
+
+    suspend fun getRecipesRandom() {
+        _state.tryEmit(State.Loading)
+        try {
+            val limitLicense = true
+            val tags = "vegetarian,dessert"
+            val number = 10
+
+            val result = getRandomRecipesUseCase.invoke(limitLicense, tags, number, "a2c4ac16a2af488987cc1960999946eb")
+            _state.tryEmit(State.Success(result))
+        } catch (e: Exception) {
+            _state.tryEmit(State.Error(e.message.toString()))
+        }
+    }
 }

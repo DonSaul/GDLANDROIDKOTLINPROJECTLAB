@@ -1,28 +1,27 @@
 package com.example.recipesapp.data
 
-import com.example.recipesapp.model.RecipeSearch
 import com.example.recipesapp.model.Recipe
+import com.example.recipesapp.model.RecipeSearch
 import com.example.recipesapp.model.RecipesArray
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.example.recipesapp.utils.API_KEY
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface RetroFitService {
-
+interface RecipesApi {
     @GET("{ltype}")
     suspend fun listRecipes(
         @Path("ltype") type: String,
         @Query("apiKey") apiKey: String,
         @Query("query") query: String
-    ): RecipeSearch
+    ): Response<RecipeSearch>
 
     @GET("{id}/information")
     suspend fun getRecipeInformation(
         @Path("id") recipeId: Int,
         @Query("apiKey") apiKey: String
-    ): Recipe
+    ): Response<Recipe>
 
     @GET("random")
     suspend fun getRandomRecipes(
@@ -30,14 +29,5 @@ interface RetroFitService {
         @Query("tags") tags: String,
         @Query("number") number: Int,
         @Query("apiKey") apiKey: String
-    ): RecipesArray
-}
-
-object RetrofitServiceFactory {
-    fun makeRetrofitService(): RetroFitService {
-        return Retrofit.Builder()
-            .baseUrl("https://api.spoonacular.com/recipes/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build().create(RetroFitService::class.java)
-    }
+    ): Response<RecipesArray>
 }
