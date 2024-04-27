@@ -90,11 +90,11 @@ fun HomeScreen() {
                         text = "Recomendaciones",
                         modifier = Modifier.padding(start = 16.dp, top = 16.dp)
                     )
-                    RecommendationsComponent()
+                    RecommendationsComponent(data.recipes)
                     Text(
                         text = "Recetas", modifier = Modifier.padding(start = 16.dp, top = 16.dp)
                     )
-                    ReceiptsComponent()
+                    ReceiptsComponent(data.recipes)
                 }
             }
         }
@@ -165,7 +165,7 @@ fun SearchBar(
 
 
 @Composable
-fun RecommendationsComponent() {
+fun RecommendationsComponent(recipes: List<Recipe>) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -174,8 +174,8 @@ fun RecommendationsComponent() {
         verticalAlignment = Alignment.CenterVertically
     ) {
         LazyRow {
-            items(items.size) {
-                RecommendedReceipt()
+            items(recipes) {
+                RecommendedReceipt(it)
             }
         }
 
@@ -183,22 +183,22 @@ fun RecommendationsComponent() {
 }
 
 @Composable
-fun ReceiptsComponent() {
+fun ReceiptsComponent(recipes: List<Recipe>) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight(),
     ) {
         LazyColumn {
-            items(receiptItems.size) {
-                RecipeCardComponent()
+            items(recipes) {
+                RecipeCardComponent(recipeName = it.title, description = it.sourceName)
             }
         }
     }
 }
 
 @Composable
-fun RecommendedReceipt() {
+fun RecommendedReceipt(recipe: Recipe) {
     Column {
         Card(
             modifier = Modifier
@@ -217,8 +217,8 @@ fun RecommendedReceipt() {
             modifier = Modifier
                 .padding(16.dp, 0.dp),
         ) {
-            Text(text = "Receipt Name")
-            Text(text = "Description")
+            Text(text = (recipe.title))
+            Text(text = (recipe.license))
 
         }
     }
