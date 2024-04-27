@@ -55,6 +55,8 @@ dependencies {
     val nav_version = "2.7.7"
     implementation("androidx.navigation:navigation-compose:$nav_version")
 
+    //Lottie Files
+    implementation ("com.airbnb.android:lottie-compose:5.2.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -65,7 +67,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation(libs.androidx.material3.android)
+    implementation(libs.androidx.material3)
     //To display Images from URL
     implementation("io.coil-kt:coil-compose:2.4.0")
     testImplementation(libs.junit)
