@@ -32,17 +32,6 @@ class MainActivity : ComponentActivity() {
 
         val recipesState =  mutableStateOf<List<Result>>(emptyList())
         var isLoading = mutableStateOf(true)
-        val service = RetrofitServiceFactory.makeRetrofitService()
-        lifecycleScope.launch {
-            val recipes = service.listRecipes(
-                "complexSearch",
-                "178d63d1ecc749af92d4180120d05054",
-                "Taco"
-            )
-            delay(1500)
-            recipesState.value = recipes.results.toList()
-            isLoading.value = false
-        }
 
         setContent {
             RecipesAppTheme {
