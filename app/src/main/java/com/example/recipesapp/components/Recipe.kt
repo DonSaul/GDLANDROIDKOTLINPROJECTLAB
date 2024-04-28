@@ -31,7 +31,7 @@ import com.example.recipesapp.model.WinePairing
 @Preview
 fun RecipeDetailPreview() {
     val recipe = Recipe(
-        id = 123,
+        id = 1234,
         title = "Delicious Pasta Recipe",
         image = "https://example.com/pasta.jpg",
         imageType = "jpg",
