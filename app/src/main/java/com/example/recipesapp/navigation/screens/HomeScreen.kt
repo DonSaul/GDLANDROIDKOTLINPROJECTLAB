@@ -20,6 +20,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
@@ -88,6 +89,11 @@ fun HomeScreen() {
                     SearchBar(
                         placeholder = "Search recipes..."
                     )
+                    Button(onClick = {
+                        viewModel.changeRandom()
+                    }) {
+                        Text(text = "d")
+                    }
                     Text(
                         text = "Recomendaciones",
                         modifier = Modifier.padding(start = 16.dp, top = 16.dp)
@@ -190,7 +196,7 @@ fun ReceiptsComponent(recipes: List<Recipe>) {
     ) {
         LazyColumn {
             items(recipes) {
-                RecipeCardComponent(recipeName = it.title, description = it.sourceName)
+                RecipeCardComponent(recipeName = it.title, description = it.vegan.toString())
             }
         }
     }

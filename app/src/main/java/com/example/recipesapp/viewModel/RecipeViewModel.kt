@@ -31,7 +31,7 @@ class RecipeViewModel @Inject constructor(
         }
     }
 
-    suspend fun getRecipesRandom() {
+    private suspend fun getRecipesRandom() {
         _state.tryEmit(State.Loading)
         try {
             val limitLicense = true
@@ -45,9 +45,41 @@ class RecipeViewModel @Inject constructor(
                 "a2c4ac16a2af488987cc1960999946eb"
             )
             _state.tryEmit(State.Success(result))
-            _recipes.tryEmit(result.recipes as List<Recipe>)
+            _recipes.tryEmit(result.recipes)
         } catch (e: Exception) {
             _state.tryEmit(State.Error(e.message.toString()))
         }
+    }
+
+
+    private suspend fun getDiff(tags: String) {
+        _state.tryEmit(State.Loading)
+        try {
+            val limitLicense = true
+            val number = 10
+
+            val result = getRandomRecipesUseCase.invoke(
+                limitLicense,
+                tags,
+                number,
+                "a2c4ac16a2af488987cc1960999946eb"
+            )
+            _state.tryEmit(State.Success(result))
+            _recipes.tryEmit(result.recipes)
+        } catch (e: Exception) {
+            _state.tryEmit(State.Error(e.message.toString()))
+        }
+    }
+
+    fun changeRandom() {
+        viewModelScope.launch {
+            getDiff("vegan")
+        }
+    }
+
+
+
+    fun execNaco(){
+        println("e")
     }
 }
