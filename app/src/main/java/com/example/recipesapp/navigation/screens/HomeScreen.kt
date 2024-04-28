@@ -1,4 +1,5 @@
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,16 +47,38 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.recipesapp.components.ListRecipes
 import com.example.recipesapp.model.Recipe
+import com.example.recipesapp.model.RecipeSearch
+import com.example.recipesapp.model.RecipesArray
+import com.example.recipesapp.viewModel.RecipeSearchViewModel
 import com.example.recipesapp.viewModel.RecipeViewModel
 import com.example.recipesapp.viewModel.State
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "CoroutineCreationDuringComposition")
 @Composable
 fun HomeScreen() {
 
     val viewModel: RecipeViewModel = hiltViewModel()
     val uiState = viewModel.state.collectAsState()
+    //val uiState2 = viewModel.state1.collectAsState()
+    //val viewModel2: RecipeSearchViewModel = hiltViewModel()
+
+    //val recipelist = viewModel.state1.collectAsState().value
+    //var list2: RecipeSearch
+
+
+    ///println("nuevo "+list2.results)
+    //viewModel.viewModelScope.launch{viewModel2.getRecipe("Fish")}
+
+    val searchText = remember {
+        mutableStateOf("")
+    }
+
+
     Column(modifier = Modifier.fillMaxSize()) {
         when (uiState.value) {
             is State.Loading -> {
@@ -82,19 +105,41 @@ fun HomeScreen() {
 
             is State.Success -> {
                 val data = (uiState.value as State.Success).data
+                //println(data.results)
+                //println(data.results)
+                //viewModel.getSearchRecipes("fish")
+                //val data2 = (uiState2.value as State.Success).data
+                //val data2 = (recipelist.value as State.Success).data
+                //println(data2.totalResults)
+                println("hola")
+                //println(uiState2.toString())
+                println("hola")
+
+
+                //runBlocking {list2 = getRecipe2("fish")}
+                //viewModel.getRecipe("Fish")
+                //viewModel.updateRecipeSearch(list2)
+                //runBlocking {viewModel.getRecipe("taco")}
+                //val data2 = (recipelist.value as State.Success).data
+                //val receta = viewModel.getSearchRecipe("fish")
+                //println(list2.results)
+
+
                 Column(modifier = Modifier.fillMaxSize()) {
                     SearchBar(
                         placeholder = "Search recipes...",
+                        action = {query -> null}
                     )
                     Text(
                         text = "Recomendaciones",
                         modifier = Modifier.padding(start = 16.dp, top = 16.dp)
                     )
-                    RecommendationsComponent(data.recipes)
+                    //RecommendationsComponent(data.recipes)
                     Text(
                         text = "Recetas", modifier = Modifier.padding(start = 16.dp, top = 16.dp)
                     )
-                    ReceiptsComponent(data.recipes)
+                    //ReceiptsComponent(data.recipes)
+                    ListRecipes(recipes = data.results, isLoading = false)
                 }
             }
         }
@@ -107,6 +152,7 @@ fun HomeScreen() {
 @Composable
 fun SearchBar(
     placeholder: String,
+    action: (String) -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     var searchText by remember { mutableStateOf("") }
@@ -124,7 +170,7 @@ fun SearchBar(
             singleLine = true,
             trailingIcon = {
                 IconButton(onClick = {
-                    keyboardController?.hide()
+                    action(searchText) // Pass the search text to the action callback
                 }) {
                     Icon(
                         imageVector = Icons.Default.Search,
@@ -134,6 +180,7 @@ fun SearchBar(
             },
             keyboardActions = KeyboardActions(onSearch = {
                 keyboardController?.hide()
+                action(searchText) // Pass the search text to the action callback
             }),
             modifier = Modifier.weight(1f)
         )
@@ -158,7 +205,6 @@ fun SearchBar(
             },
                 text = { Text(text = "vaors") }
             )
-            // Agrega más opciones si lo necesitas
         }
     }
 }

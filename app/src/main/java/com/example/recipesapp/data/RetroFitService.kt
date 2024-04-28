@@ -1,8 +1,12 @@
 package com.example.recipesapp.data
 
+import androidx.lifecycle.viewModelScope
 import com.example.recipesapp.model.RecipeSearch
 import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.model.RecipesArray
+import com.example.recipesapp.utils.API_KEY
+import com.example.recipesapp.viewModel.State
+import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -11,12 +15,12 @@ import retrofit2.http.Query
 
 interface RetroFitService {
 
-    @GET("{ltype}")
+    /*@GET("{ltype}")
     suspend fun listRecipes(
         @Path("ltype") type: String,
         @Query("apiKey") apiKey: String,
-        @Query("query") query: String
-    ): RecipeSearch
+        @Query("query") query: String?
+    ): RecipeSearch*/
 
     @GET("{id}/information")
     suspend fun getRecipeInformation(
@@ -41,3 +45,13 @@ object RetrofitServiceFactory {
             .build().create(RetroFitService::class.java)
     }
 }
+
+
+/*suspend fun getRecipe2(query: String? = "Taco"): RecipeSearch{
+        val service = RetrofitServiceFactory.makeRetrofitService()
+        val list =
+            service.listRecipes("complexSearch", API_KEY, query)
+    return list
+    }*/
+
+

@@ -6,3 +6,5 @@ data class Result(
     val imageType: String,
     val title: String
 )
+
+

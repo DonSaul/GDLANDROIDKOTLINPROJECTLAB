@@ -2,6 +2,7 @@ package com.example.recipesapp.data
 
 import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.model.RecipeSearch
+import com.example.recipesapp.model.RecipeSearchList
 import com.example.recipesapp.model.RecipesArray
 import com.example.recipesapp.utils.API_KEY
 import retrofit2.Response
@@ -10,9 +11,8 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface RecipesApi {
-    @GET("{ltype}")
+    @GET("complexSearch")
     suspend fun listRecipes(
-        @Path("ltype") type: String,
         @Query("apiKey") apiKey: String,
         @Query("query") query: String
     ): Response<RecipeSearch>
