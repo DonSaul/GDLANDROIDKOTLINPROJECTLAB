@@ -128,7 +128,7 @@ fun HomeScreen() {
                 Column(modifier = Modifier.fillMaxSize()) {
                     SearchBar(
                         placeholder = "Search recipes...",
-                        action = {query -> null}
+                        action = {query -> viewModel.getSearchRecipe2(query)}
                     )
                     Text(
                         text = "Recomendaciones",
@@ -152,7 +152,7 @@ fun HomeScreen() {
 @Composable
 fun SearchBar(
     placeholder: String,
-    action: (String) -> Unit
+    action: (String) -> Unit // Update the action parameter to accept a String parameter
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     var searchText by remember { mutableStateOf("") }
@@ -171,6 +171,7 @@ fun SearchBar(
             trailingIcon = {
                 IconButton(onClick = {
                     action(searchText) // Pass the search text to the action callback
+                    Log.i("debug", "hola mundo")
                 }) {
                     Icon(
                         imageVector = Icons.Default.Search,

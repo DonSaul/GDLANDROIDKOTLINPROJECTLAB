@@ -56,7 +56,7 @@ class RecipeViewModel @Inject constructor(
         }
         }
     }*/
-     fun getSearchRecipes(query: String = "Taco") {
+     fun getSearchRecipes(query: String = "fish") {
         viewModelScope.launch {
             _state.value = State.Loading
             try {
