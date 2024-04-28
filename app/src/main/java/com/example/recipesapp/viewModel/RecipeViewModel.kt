@@ -21,9 +21,13 @@ class RecipeViewModel @Inject constructor(
     private val _state = MutableStateFlow<State<RecipesArray>>(State.Loading)
     val state = _state as StateFlow<State<RecipesArray>>
 
+
+    val _recipes = MutableStateFlow<List<Recipe>>(emptyList())
+    val recipe = _recipes as StateFlow<List<Recipe>>
+
     init {
         viewModelScope.launch {
-           getRecipesRandom()
+            getRecipesRandom()
         }
     }
 
@@ -34,8 +38,14 @@ class RecipeViewModel @Inject constructor(
             val tags = "vegetarian,dessert"
             val number = 10
 
-            val result = getRandomRecipesUseCase.invoke(limitLicense, tags, number, "a2c4ac16a2af488987cc1960999946eb")
+            val result = getRandomRecipesUseCase.invoke(
+                limitLicense,
+                tags,
+                number,
+                "a2c4ac16a2af488987cc1960999946eb"
+            )
             _state.tryEmit(State.Success(result))
+            _recipes.tryEmit(result.recipes as List<Recipe>)
         } catch (e: Exception) {
             _state.tryEmit(State.Error(e.message.toString()))
         }

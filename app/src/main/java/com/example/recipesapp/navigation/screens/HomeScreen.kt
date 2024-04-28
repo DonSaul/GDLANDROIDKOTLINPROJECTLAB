@@ -55,7 +55,9 @@ import com.example.recipesapp.viewModel.State
 fun HomeScreen() {
     val viewModel: RecipeViewModel = hiltViewModel()
     val uiState = viewModel.state.collectAsState()
-    //viewModel.getRecipesRandom()
+
+    val recipes = viewModel.recipe.collectAsState().value
+
     Column(modifier = Modifier.fillMaxSize()) {
         when (uiState.value) {
             is State.Loading -> {
@@ -87,9 +89,14 @@ fun HomeScreen() {
                         placeholder = "Search recipes..."
                     )
                     Text(
+                        text = "Recomendaciones",
+                        modifier = Modifier.padding(start = 16.dp, top = 16.dp)
+                    )
+                    RecommendationsComponent(recipes)
+                    Text(
                         text = "Recetas", modifier = Modifier.padding(start = 16.dp, top = 16.dp)
                     )
-                    ListRecipes(recipes = data.recipes, isLoading = false)
+                    ReceiptsComponent(recipes)
                 }
             }
         }
