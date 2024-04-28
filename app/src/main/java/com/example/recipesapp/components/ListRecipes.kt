@@ -10,19 +10,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.recipesapp.R
 import com.example.recipesapp.assets.MainAnimation
-import com.example.recipesapp.model.Result
+import com.example.recipesapp.model.Recipe
 
 @Composable
-fun ListRecipes(recipes: List<Result>, modifier: Modifier = Modifier, isLoading: Boolean) {
+fun ListRecipes(recipes: List<Recipe>, modifier: Modifier = Modifier, isLoading: Boolean) {
     Column(
         modifier = Modifier
             .fillMaxWidth(),
@@ -47,7 +45,7 @@ fun ListRecipes(recipes: List<Result>, modifier: Modifier = Modifier, isLoading:
             }
         } else {
             LazyColumn() {
-                itemsIndexed(recipes) { index, item ->
+                itemsIndexed(recipes) { _, item ->
                     RecipeCard(item, action = {})
                 }
             }
@@ -55,6 +53,7 @@ fun ListRecipes(recipes: List<Result>, modifier: Modifier = Modifier, isLoading:
     }
 }
 
+/*
 @Preview
 @Composable
 fun ListRecipesPreview(modifier: Modifier = Modifier) {
@@ -101,4 +100,4 @@ fun ListRecipesPreview(modifier: Modifier = Modifier) {
             RecipeCard(recipes[index], action = {})
         }
     }
-}
+}*/

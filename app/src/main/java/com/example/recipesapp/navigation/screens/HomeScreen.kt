@@ -28,7 +28,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -46,6 +45,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.recipesapp.components.ListRecipes
 import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.viewModel.RecipeViewModel
 import com.example.recipesapp.viewModel.State
@@ -53,9 +53,9 @@ import com.example.recipesapp.viewModel.State
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen() {
-
     val viewModel: RecipeViewModel = hiltViewModel()
     val uiState = viewModel.state.collectAsState()
+    //viewModel.getRecipesRandom()
     Column(modifier = Modifier.fillMaxSize()) {
         when (uiState.value) {
             is State.Loading -> {
@@ -84,29 +84,22 @@ fun HomeScreen() {
                 val data = (uiState.value as State.Success).data
                 Column(modifier = Modifier.fillMaxSize()) {
                     SearchBar(
-                        placeholder = "Search recipes...",
+                        placeholder = "Search recipes..."
                     )
-                    Text(
-                        text = "Recomendaciones",
-                        modifier = Modifier.padding(start = 16.dp, top = 16.dp)
-                    )
-                    RecommendationsComponent(data.recipes)
                     Text(
                         text = "Recetas", modifier = Modifier.padding(start = 16.dp, top = 16.dp)
                     )
-                    ReceiptsComponent(data.recipes)
+                    ListRecipes(recipes = data.recipes, isLoading = false)
                 }
             }
         }
     }
-
-
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchBar(
-    placeholder: String,
+    placeholder: String
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     var searchText by remember { mutableStateOf("") }
@@ -124,7 +117,7 @@ fun SearchBar(
             singleLine = true,
             trailingIcon = {
                 IconButton(onClick = {
-                    keyboardController?.hide()
+                    //action
                 }) {
                     Icon(
                         imageVector = Icons.Default.Search,
@@ -158,7 +151,6 @@ fun SearchBar(
             },
                 text = { Text(text = "vaors") }
             )
-            // Agrega más opciones si lo necesitas
         }
     }
 }
@@ -263,28 +255,6 @@ fun RecipeCardComponent(
         }
     }
 }
-
-val items = listOf(
-    "",
-    "",
-    "",
-    "",
-    "",
-)
-
-
-val receiptItems = listOf(
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-)
 
 @Preview(showBackground = true)
 @Composable
