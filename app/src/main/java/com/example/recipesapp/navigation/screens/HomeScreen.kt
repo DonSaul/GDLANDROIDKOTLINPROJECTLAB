@@ -83,30 +83,24 @@ fun HomeScreen() {
             }
 
             is State.Success -> {
-                val data = (uiState.value as State.Success).data
-                Column(modifier = Modifier.fillMaxSize()) {
-                    SearchBar(
-                        placeholder = "Search recipes..."
-                    )
-                    Text(
-                        text = "Recomendaciones",
-                        modifier = Modifier.padding(start = 16.dp, top = 16.dp)
-                    )
-                    RecommendationsComponent(recipes)
-                    Text(
-                        text = "Recetas", modifier = Modifier.padding(start = 16.dp, top = 16.dp)
-                    )
-                    ReceiptsComponent(recipes)
-                }
+                SearchBar(
+                    placeholder = "Search recipes...",
+                    action = { query -> viewModel.searchRecipes(query) }
+                )
+                Text(
+                    text = "Recipes",
+                    modifier = Modifier.padding(start = 16.dp, top = 16.dp)
+                )
+                ListRecipes(recipes = recipes, isLoading = false)
             }
         }
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchBar(
-    placeholder: String
+    placeholder: String,
+    action: (String) -> Unit // Update the action parameter to accept a String parameter
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     var searchText by remember { mutableStateOf("") }
@@ -124,7 +118,7 @@ fun SearchBar(
             singleLine = true,
             trailingIcon = {
                 IconButton(onClick = {
-                    //action
+                    action(searchText) // Pass the search text to the action callback
                 }) {
                     Icon(
                         imageVector = Icons.Default.Search,
@@ -134,6 +128,7 @@ fun SearchBar(
             },
             keyboardActions = KeyboardActions(onSearch = {
                 keyboardController?.hide()
+                action(searchText) // Pass the search text to the action callback
             }),
             modifier = Modifier.weight(1f)
         )
@@ -161,7 +156,6 @@ fun SearchBar(
         }
     }
 }
-
 
 @Composable
 fun RecommendationsComponent(recipes: List<Recipe>) {

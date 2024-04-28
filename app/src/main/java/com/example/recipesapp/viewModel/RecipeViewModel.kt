@@ -21,7 +21,6 @@ class RecipeViewModel @Inject constructor(
     private val _state = MutableStateFlow<State<RecipesArray>>(State.Loading)
     val state = _state as StateFlow<State<RecipesArray>>
 
-
     val _recipes = MutableStateFlow<List<Recipe>>(emptyList())
     val recipe = _recipes as StateFlow<List<Recipe>>
 
@@ -42,12 +41,33 @@ class RecipeViewModel @Inject constructor(
                 limitLicense,
                 tags,
                 number,
-                "a2c4ac16a2af488987cc1960999946eb"
+                "be0bdc6d7c5d4fa88cc8453fff432cb2"
             )
             _state.tryEmit(State.Success(result))
             _recipes.tryEmit(result.recipes as List<Recipe>)
         } catch (e: Exception) {
             _state.tryEmit(State.Error(e.message.toString()))
+        }
+    }
+
+    fun searchRecipes(tags: String = "tacos") {
+        viewModelScope.launch {
+            _state.value = State.Loading
+            try {
+                val limitLicense = true
+                val number = 10
+
+                val result = getRandomRecipesUseCase.invoke(
+                    limitLicense,
+                    tags,
+                    number,
+                    "be0bdc6d7c5d4fa88cc8453fff432cb2"
+                )
+                    _state.value = State.Success(result)
+                _recipes.value = result.recipes
+            } catch (e: Exception) {
+                _state.value = State.Error(e.message ?: "Unknown error")
+            }
         }
     }
 }
