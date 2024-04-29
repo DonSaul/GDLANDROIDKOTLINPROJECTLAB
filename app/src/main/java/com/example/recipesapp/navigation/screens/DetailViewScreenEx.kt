@@ -8,6 +8,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -91,8 +92,7 @@ fun RecipeDetailPreview() {
                     ratingCount = 100,
                     score = 95.0,
                     link = "https://example.com/red-wine"
-                ),
-                ProductMatch(
+                ), ProductMatch(
                     id = 2,
                     title = "White Wine",
                     description = "A refreshing white wine.",
@@ -108,39 +108,33 @@ fun RecipeDetailPreview() {
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun DetailViewScreen(navController: NavController, id:Int){
+fun DetailViewScreen(navController: NavController, id: Int) {
     IdRecipe.idRecipe = id
     val viewModel: RecipeByIdViewModel = hiltViewModel()
     val uiState = viewModel.state.collectAsState()
     val context = LocalContext.current
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceEvenly,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Icon(
-            Icons.Filled.KeyboardArrowLeft, "",
-            modifier = Modifier
-                .size(30.dp)
-                .clickable(
-                    enabled = true,
-                    onClickLabel = null,
-                    role = Role.Button,
-                    onClick = {
-                        navController.popBackStack()
-                        navController.navigate(Screen.Home.route)
-                    }
-                )
-                .background(Color.Transparent, RoundedCornerShape(16.dp)),
-            tint = Color.White
-        )
+    val recipe = (uiState.value as State.Success).data
+
+    Scaffold(
+        topBar = {
+            TopAppBar(title = { Text(text = "${recipe?.title}") }, navigationIcon = {
+                IconButton(onClick = { navController.popBackStack() }) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack, contentDescription = "Back"
+                    )
+                }
+            })
+        },
+    ) { innerPadding ->
         Card(
             shape = RoundedCornerShape(16.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .verticalScroll(rememberScrollState()),
+                .verticalScroll(rememberScrollState())
+                .padding(innerPadding),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 10.dp,
             ),
@@ -162,7 +156,8 @@ fun DetailViewScreen(navController: NavController, id:Int){
                                 .height(250.dp)
                                 .fillMaxWidth()
                                 .fillMaxHeight()
-                                .align(alignment = Alignment.CenterHorizontally), image = R.raw.re
+                                .align(alignment = Alignment.CenterHorizontally),
+                            image = R.raw.re
                         )
                     }
                 }
@@ -199,27 +194,31 @@ fun DetailViewScreen(navController: NavController, id:Int){
                             //modifier = Modifier.padding(bottom = 16.dp)
                         )
                     }
-                    Column(modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth().clip(RoundedCornerShape(16)),
+                    Column(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(16)),
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center) {
+                        verticalArrangement = Arrangement.Center
+                    ) {
                         AsyncImage(
                             model = recipe?.image,
                             contentScale = ContentScale.Crop,
                             contentDescription = recipe?.summary,
                             modifier = Modifier
-                                .height(200.dp).width(300.dp)
+                                .height(200.dp)
+                                .width(300.dp)
                                 .clip(RoundedCornerShape(16))
 
                         )
                     }
 
-                    Row (
+                    Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween){
-                        Column(modifier = Modifier.padding(16.dp))
-                        {
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp)) {
                             Text(
                                 text = "Ingredients:",
                                 style = MaterialTheme.typography.titleMedium,
@@ -229,8 +228,7 @@ fun DetailViewScreen(navController: NavController, id:Int){
                                 text = "Lorem\nIpsum\nLatin",
                                 style = MaterialTheme.typography.bodySmall,
                                 modifier = Modifier.padding(bottom = 4.dp)
-                            )
-                            /*recipe.instructions.forEach { ingredient ->
+                            )/*recipe.instructions.forEach { ingredient ->
                                 Text(
                                     text = "° $ingredient",
                                     style = MaterialTheme.typography.bodySmall,
@@ -240,12 +238,16 @@ fun DetailViewScreen(navController: NavController, id:Int){
                         }
                     }
 
-                    Row (modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center) {
-                        Column(modifier = Modifier
-                            .padding(16.dp)
-                            .fillMaxWidth()
-                            .weight(1f)){
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .fillMaxWidth()
+                                .weight(1f)
+                        ) {
                             Text(
                                 text = "Procedure:",
                                 style = MaterialTheme.typography.titleMedium,
@@ -255,8 +257,7 @@ fun DetailViewScreen(navController: NavController, id:Int){
                                 text = "${recipe?.instructions}",
                                 style = MaterialTheme.typography.bodySmall,
                                 modifier = Modifier.padding(bottom = 4.dp)
-                            )
-                            /*recipe?.instructions.forEach{ instruction ->
+                            )/*recipe?.instructions.forEach{ instruction ->
                                 Text(
                                     text = "${instruction}",
                                     style = MaterialTheme.typography.bodySmall,
@@ -264,8 +265,7 @@ fun DetailViewScreen(navController: NavController, id:Int){
                                 )
                             }*/
                         }
-                    }
-                    /*val data = (uiState.value as State.Success).data
+                    }/*val data = (uiState.value as State.Success).data
                     Text(
                         text = "Recipes ${data?.id} \n ${data?.image}",
                         modifier = Modifier.padding(start = 16.dp, top = 16.dp)
