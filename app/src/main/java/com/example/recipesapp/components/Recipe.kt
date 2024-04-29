@@ -1,23 +1,34 @@
 package com.example.recipesapp.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.recipesapp.ui.theme.*
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.recipesapp.model.ProductMatch
@@ -26,14 +37,14 @@ import com.example.recipesapp.model.RecipesArray
 import com.example.recipesapp.model.WinePairing
 
 
-
+//var selectedIndex by remember { mutableStateOf(0) }
 @Composable
 @Preview
 fun RecipeDetailPreview() {
     val recipe = Recipe(
         id = 1234,
-        title = "Delicious Pasta Recipe",
-        image = "https://example.com/pasta.jpg",
+        title = "Green enchiladas",
+        image = "https://img.spoonacular.com/recipes/1098304-312x231.jpg",
         imageType = "jpg",
         servings = 4,
         readyInMinutes = 30,
@@ -54,7 +65,7 @@ fun RecipeDetailPreview() {
         diets = listOf("Healthy"),
         gaps = "Some gaps",
         glutenFree = false,
-        instructions = "Lorem",
+        instructions = "Prueba",
         ketogenic = false,
         lowFodmap = false,
         occasions = listOf("Dinner"),
@@ -108,11 +119,14 @@ fun RecipeDetail(recipe: Recipe, modifier: Modifier = Modifier) {
             defaultElevation = 10.dp,
         ),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            //containerColor = MaterialTheme.colorScheme.primaryContainer,
+            containerColor = LightBrown
         ),
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
             Text(
                 text = recipe.title,
@@ -124,31 +138,64 @@ fun RecipeDetail(recipe: Recipe, modifier: Modifier = Modifier) {
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
+        }
 
-            Text(
-                text = "Ingredients:",
-                style = MaterialTheme.typography.titleSmall,
-                modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+        Row (modifier = Modifier.padding(16.dp)){
+            AsyncImage(model = recipe.image,
+                contentDescription = recipe.summary,
+                modifier = Modifier
+                    .size(300.dp)
+                    //.clip(CircleShape)
+                    .aspectRatio(1f)
             )
-            recipe.instructions.forEach { ingredient ->
+        }
+
+        Row (modifier = Modifier.padding(16.dp)){
+            Column(modifier = Modifier.padding(16.dp))
+            {
                 Text(
-                    text = "- $ingredient",
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.padding(bottom = 4.dp)
+                    text = "Ingredients:",
+                    style = MaterialTheme.typography.titleSmall,
+                    modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
                 )
+                recipe.instructions.forEach { ingredient ->
+                    Text(
+                        text = "° $ingredient",
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    )
+                }
             }
-
-            Text(
-                text = "Instructions:",
-                style = MaterialTheme.typography.titleSmall,
-                modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
-            )
-            recipe.instructions.forEachIndexed { index, instruction ->
+            Column(modifier = Modifier.padding(16.dp)){
                 Text(
-                    text = "${index + 1}. $instruction",
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.padding(bottom = 4.dp)
+                    text = "Cookware:",
+                    style = MaterialTheme.typography.titleSmall,
+                    modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
                 )
+                recipe.instructions.forEach { instruction ->
+                    Text(
+                        text = "* $instruction",
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    )
+                }
+            }
+        }
+
+        Row (modifier = Modifier.padding(16.dp)) {
+            Column(modifier = Modifier.padding(16.dp)){
+                Text(
+                    text = "Procedure:",
+                    style = MaterialTheme.typography.titleSmall,
+                    modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+                )
+                recipe.instructions.forEachIndexed { index, instruction ->
+                    Text(
+                        text = "${index + 1}. $instruction",
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    )
+                }
             }
         }
     }
