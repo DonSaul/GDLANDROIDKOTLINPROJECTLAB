@@ -56,7 +56,7 @@ fun HomeScreen() {
     val viewModel: RecipeViewModel = hiltViewModel()
     val uiState = viewModel.state.collectAsState()
 
-    val recipes = viewModel.recipe.collectAsState().value
+    //val recipes = viewModel.recipe.collectAsState().value
 
     Column(modifier = Modifier.fillMaxSize()) {
         when (uiState.value) {
@@ -83,15 +83,16 @@ fun HomeScreen() {
             }
 
             is State.Success -> {
+                val data = (uiState.value as State.Success).data
                 SearchBar(
                     placeholder = "Search recipes...",
-                    action = { query -> viewModel.searchRecipes(query) }
+                    action = { query -> viewModel.getSearchRecipe2(query) }
                 )
                 Text(
                     text = "Recipes",
                     modifier = Modifier.padding(start = 16.dp, top = 16.dp)
                 )
-                ListRecipes(recipes = recipes, isLoading = false)
+                ListRecipes(recipes = data.results, isLoading = false)
             }
         }
     }

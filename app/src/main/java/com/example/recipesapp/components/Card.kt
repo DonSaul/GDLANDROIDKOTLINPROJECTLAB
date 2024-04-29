@@ -20,6 +20,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.model.RecipesArray
+import com.example.recipesapp.model.Result
 
 /*@Preview
 @Composable
@@ -36,7 +37,7 @@ fun RecipeCardPreview() {
 }*/
 
 @Composable
-fun RecipeCard(recipe: Recipe, action: () -> Unit, modifier: Modifier = Modifier) {
+fun RecipeCard(recipe: Result, action: () -> Unit, modifier: Modifier = Modifier) {
     Card(
         shape = RoundedCornerShape(16.dp),
         modifier = Modifier.padding(10.dp,5.dp,10.dp,10.dp),

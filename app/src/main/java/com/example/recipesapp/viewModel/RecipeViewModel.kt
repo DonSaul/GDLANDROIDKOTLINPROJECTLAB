@@ -4,8 +4,10 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipesapp.data.usecase.GetRandomRecipesUseCase
+import com.example.recipesapp.data.usecase.GetSearchRecipesUseCase
 import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.model.RecipesArray
+import com.example.recipesapp.model.RecipeSearch
 import com.example.recipesapp.utils.API_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,22 +17,47 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RecipeViewModel @Inject constructor(
-    private val getRandomRecipesUseCase: GetRandomRecipesUseCase
+    private val getRandomRecipesUseCase: GetRandomRecipesUseCase,
+    private val getSearchRecipesUseCase: GetSearchRecipesUseCase
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<State<RecipesArray>>(State.Loading)
-    val state = _state as StateFlow<State<RecipesArray>>
+    //private val _state = MutableStateFlow<State<RecipesArray>>(State.Loading)
+    //val state = _state as StateFlow<State<RecipesArray>>
 
     val _recipes = MutableStateFlow<List<Recipe>>(emptyList())
     val recipe = _recipes as StateFlow<List<Recipe>>
 
+    private val _state = MutableStateFlow<State<RecipeSearch>>(State.Loading)
+    val state = _state as StateFlow<State<RecipeSearch>>
+
     init {
         viewModelScope.launch {
-            getRecipesRandom()
+            //getRecipesRandom()
+            getSearchRecipes()
         }
     }
 
-    suspend fun getRecipesRandom() {
+    fun getSearchRecipes(query: String = "fish") {
+        viewModelScope.launch {
+            _state.value = State.Loading
+            try {
+
+                val result = getSearchRecipesUseCase.invoke(API_KEY,query)
+                _state.value = State.Success(result)
+
+            } catch (e: Exception) {
+                _state.tryEmit(State.Error(e.message.toString()))
+            }
+        }
+    }
+    fun getSearchRecipe2(query: String) {
+        viewModelScope.launch {
+            getSearchRecipes(query)
+
+        }
+    }
+
+    /*suspend fun getRecipesRandom() {
         _state.tryEmit(State.Loading)
         try {
             val limitLicense = true
@@ -69,5 +96,7 @@ class RecipeViewModel @Inject constructor(
                 _state.value = State.Error(e.message ?: "Unknown error")
             }
         }
-    }
+    }*/
+
+
 }

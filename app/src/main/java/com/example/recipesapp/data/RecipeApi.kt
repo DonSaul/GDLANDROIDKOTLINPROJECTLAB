@@ -10,9 +10,9 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface RecipesApi {
-    @GET("{ltype}")
+
+    @GET("complexSearch")
     suspend fun listRecipes(
-        @Path("ltype") type: String,
         @Query("apiKey") apiKey: String,
         @Query("query") query: String
     ): Response<RecipeSearch>

@@ -18,9 +18,10 @@ import androidx.compose.ui.unit.dp
 import com.example.recipesapp.R
 import com.example.recipesapp.assets.MainAnimation
 import com.example.recipesapp.model.Recipe
+import com.example.recipesapp.model.Result
 
 @Composable
-fun ListRecipes(recipes: List<Recipe>, modifier: Modifier = Modifier, isLoading: Boolean) {
+fun ListRecipes(recipes: List<Result>, modifier: Modifier = Modifier, isLoading: Boolean) {
     Column(
         modifier = Modifier
             .fillMaxWidth(),
