@@ -18,8 +18,10 @@ import androidx.lifecycle.lifecycleScope
 import com.example.recipesapp.components.ListRecipes
 import com.example.recipesapp.components.RecipeCard
 import com.example.recipesapp.components.TextField
+import com.example.recipesapp.data.IdRecipe
 import com.example.recipesapp.data.RetrofitServiceFactory
 import com.example.recipesapp.model.Result
+import com.example.recipesapp.navigation.screens.DetailViewScreenEx
 import com.example.recipesapp.ui.theme.RecipesAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -35,7 +37,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             RecipesAppTheme {
-                HomeScreen()
+                DetailViewScreenEx(id = 1460497)
             }
         }
     }
