@@ -1,5 +1,6 @@
 package com.example.recipesapp.components
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,7 +22,13 @@ import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.model.Result
 
 @Composable
-fun ListRecipes(recipes: List<Result>, modifier: Modifier = Modifier, isLoading: Boolean) {
+fun ListRecipes(
+    recipes: List<Result>,
+    modifier: Modifier = Modifier,
+    isLoading: Boolean,
+    idSelected: Int,
+    onRecipeClick: (Int) -> Unit // Click listener for recipe cards
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth(),
@@ -46,59 +53,13 @@ fun ListRecipes(recipes: List<Result>, modifier: Modifier = Modifier, isLoading:
             }
         } else {
             LazyColumn() {
-                itemsIndexed(recipes) { _, item ->
-                    RecipeCard(item, action = {})
+                itemsIndexed(recipes) { index, item ->
+                    RecipeCard(item, action = {
+                        Log.i("debug", item.id.toString())
+                        onRecipeClick(item.id)
+                    })
                 }
             }
         }
     }
 }
-
-/*
-@Preview
-@Composable
-fun ListRecipesPreview(modifier: Modifier = Modifier) {
-    val recipes = mutableListOf<Result>()
-
-    // Recipe 1: Spaghetti Carbonara
-    val spaghettiCarbonara = Result(
-        id = 1,
-        image = "https://img.spoonacular.com/recipes/662744-312x231.jpg",
-        imageType = "jpg",
-        title = "Spaghetti Carbonara"
-    )
-    recipes.add(spaghettiCarbonara)
-
-    // Recipe 2: Vegetable Stir-Fry
-    val vegetableStirFry = Result(
-        id = 2,
-        image = "https://img.spoonacular.com/recipes/662744-312x231.jpg",
-        imageType = "jpg",
-        title = "Vegetable Stir-Fry"
-    )
-    recipes.add(vegetableStirFry)
-
-    // Recipe 3: Grilled Salmon with Asparagus
-    val grilledSalmonAsparagus = Result(
-        id = 3,
-        image = "https://img.spoonacular.com/recipes/662744-312x231.jpg",
-        imageType = "jpg",
-        title = "Grilled Salmon with Asparagus"
-    )
-    recipes.add(grilledSalmonAsparagus)
-
-    // Recipe 4: Mushroom Risotto
-    val mushroomRisotto = Result(
-        id = 4,
-        image = "https://img.spoonacular.com/recipes/662744-312x231.jpg",
-        imageType = "jpg",
-        title = "Mushroom Risotto"
-    )
-    recipes.add(mushroomRisotto)
-
-    LazyColumn() {
-        itemsIndexed(recipes) { index, item ->
-            RecipeCard(recipes[index], action = {})
-        }
-    }
-}*/

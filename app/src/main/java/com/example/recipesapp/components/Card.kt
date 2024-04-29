@@ -40,7 +40,9 @@ fun RecipeCardPreview() {
 fun RecipeCard(recipe: Result, action: () -> Unit, modifier: Modifier = Modifier) {
     Card(
         shape = RoundedCornerShape(16.dp),
-        modifier = Modifier.padding(10.dp,5.dp,10.dp,10.dp),
+        modifier = Modifier
+            .padding(10.dp,5.dp,10.dp,10.dp)
+            .clickable { action() }, // Apply clickable modifier here
         elevation = CardDefaults.cardElevation(
             defaultElevation =  10.dp,
         ),
@@ -48,10 +50,7 @@ fun RecipeCard(recipe: Result, action: () -> Unit, modifier: Modifier = Modifier
             containerColor =  MaterialTheme.colorScheme.primaryContainer,
         ),
     ) {
-        Column(
-            modifier = Modifier
-                .clickable { action }
-        ) {
+        Column() {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(recipe.image)

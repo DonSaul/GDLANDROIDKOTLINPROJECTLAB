@@ -1,4 +1,5 @@
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -45,20 +46,25 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.recipesapp.components.ListRecipes
 import com.example.recipesapp.model.Recipe
+import com.example.recipesapp.navigation.Screen
 import com.example.recipesapp.viewModel.RecipeViewModel
 import com.example.recipesapp.viewModel.State
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+    idSelected : Int,
+    onIdSelectedChange: (Int) -> Unit
+) {
     val viewModel: RecipeViewModel = hiltViewModel()
     val uiState = viewModel.state.collectAsState()
 
-    //val recipes = viewModel.recipe.collectAsState().value
-
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = modifier.fillMaxSize()) {
         when (uiState.value) {
             is State.Loading -> {
                 Column(
@@ -92,7 +98,15 @@ fun HomeScreen() {
                     text = "Recipes",
                     modifier = Modifier.padding(start = 16.dp, top = 16.dp)
                 )
-                ListRecipes(recipes = data.results, isLoading = false)
+                ListRecipes(
+                    recipes = data.results,
+                    isLoading = false,
+                    idSelected = idSelected,
+                    onRecipeClick = { clickedRecipeId ->
+                        onIdSelectedChange(clickedRecipeId)
+                        navController.navigate(Screen.Detail.route)
+                    }
+                )
             }
         }
     }
@@ -119,7 +133,7 @@ fun SearchBar(
             singleLine = true,
             trailingIcon = {
                 IconButton(onClick = {
-                    action(searchText) // Pass the search text to the action callback
+                    action(searchText)
                 }) {
                     Icon(
                         imageVector = Icons.Default.Search,
@@ -129,7 +143,7 @@ fun SearchBar(
             },
             keyboardActions = KeyboardActions(onSearch = {
                 keyboardController?.hide()
-                action(searchText) // Pass the search text to the action callback
+                action(searchText)
             }),
             modifier = Modifier.weight(1f)
         )
@@ -258,8 +272,10 @@ fun RecipeCardComponent(
     }
 }
 
+/*
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     HomeScreen()
 }
+*/
