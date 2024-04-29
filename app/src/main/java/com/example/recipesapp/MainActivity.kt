@@ -15,27 +15,29 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.compose.rememberNavController
 import com.example.recipesapp.components.ListRecipes
 import com.example.recipesapp.components.RecipeCard
+import com.example.recipesapp.components.RecipeDetail
 import com.example.recipesapp.components.TextField
+import com.example.recipesapp.data.IdRecipe
 import com.example.recipesapp.data.RetrofitServiceFactory
 import com.example.recipesapp.model.Result
+import com.example.recipesapp.navigation.SetUpNavGraph
 import com.example.recipesapp.ui.theme.RecipesAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val recipesState =  mutableStateOf<List<Result>>(emptyList())
-        var isLoading = mutableStateOf(true)
-
         setContent {
+            val navController = rememberNavController()
+
             RecipesAppTheme {
-                HomeScreen()
+                SetUpNavGraph(navController = navController)
             }
         }
     }

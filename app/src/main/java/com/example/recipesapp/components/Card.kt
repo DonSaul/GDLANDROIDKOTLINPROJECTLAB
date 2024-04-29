@@ -15,18 +15,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.recipesapp.model.Recipe
+import com.example.recipesapp.model.RecipesArray
 import com.example.recipesapp.model.Result
-import com.example.recipesapp.ui.theme.RecipesAppTheme
 
-@Preview
+/*@Preview
 @Composable
 fun RecipeCardPreview() {
     RecipesAppTheme {
-        val recipe = Result(
+        val recipe = Recipe(
             id = 1,
             image = "https://img.spoonacular.com/recipes/662744-312x231.jpg",
             imageType = "jpg",
@@ -34,13 +34,15 @@ fun RecipeCardPreview() {
         )
         RecipeCard(recipe = recipe, action = {})
     }
-}
+}*/
 
 @Composable
-fun RecipeCard(recipe : Result, action: () -> Unit, modifier: Modifier = Modifier) {
+fun RecipeCard(recipe: Result, action: () -> Unit, modifier: Modifier = Modifier) {
     Card(
         shape = RoundedCornerShape(16.dp),
-        modifier = Modifier.padding(10.dp,5.dp,10.dp,10.dp),
+        modifier = Modifier
+            .padding(10.dp,5.dp,10.dp,10.dp)
+            .clickable { action() }, // Apply clickable modifier here
         elevation = CardDefaults.cardElevation(
             defaultElevation =  10.dp,
         ),
@@ -48,10 +50,7 @@ fun RecipeCard(recipe : Result, action: () -> Unit, modifier: Modifier = Modifie
             containerColor =  MaterialTheme.colorScheme.primaryContainer,
         ),
     ) {
-        Column(
-            modifier = Modifier
-                .clickable { action }
-        ) {
+        Column() {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(recipe.image)
