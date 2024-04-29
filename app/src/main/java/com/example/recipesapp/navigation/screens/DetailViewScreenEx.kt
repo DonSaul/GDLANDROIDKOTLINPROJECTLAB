@@ -28,9 +28,11 @@ import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.model.WinePairing
 import com.example.recipesapp.ui.theme.LightBrown
 import com.example.recipesapp.viewModel.State
-import androidx.compose.material.icons.filled.ChevronLeft
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.Role
+import com.example.recipesapp.R
+import com.example.recipesapp.assets.MainAnimation
 import com.example.recipesapp.navigation.Screen
 
 @Composable
@@ -119,7 +121,7 @@ fun DetailViewScreen(navController: NavController, id:Int){
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
-            Icons.Filled.ChevronLeft, "",
+            Icons.Filled.KeyboardArrowLeft, "",
             modifier = Modifier
                 .size(30.dp)
                 .clickable(
@@ -154,8 +156,14 @@ fun DetailViewScreen(navController: NavController, id:Int){
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        CircularProgressIndicator()
-                        Text(text = "Loading")
+                        MainAnimation(
+                            modifier = Modifier
+                                .width(250.dp)
+                                .height(250.dp)
+                                .fillMaxWidth()
+                                .fillMaxHeight()
+                                .align(alignment = Alignment.CenterHorizontally), image = R.raw.re
+                        )
                     }
                 }
 

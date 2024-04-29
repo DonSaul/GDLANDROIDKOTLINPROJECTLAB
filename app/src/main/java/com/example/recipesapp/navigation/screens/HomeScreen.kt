@@ -84,8 +84,14 @@ fun HomeScreen(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    CircularProgressIndicator()
-                    Text(text = "Loading")
+                    MainAnimation(
+                        modifier = Modifier
+                            .width(250.dp)
+                            .height(250.dp)
+                            .fillMaxWidth()
+                            .fillMaxHeight()
+                            .align(alignment = Alignment.CenterHorizontally), image = R.raw.re
+                    )
                 }
             }
 
@@ -214,34 +220,17 @@ fun ReceiptsComponent(
             .fillMaxHeight(),
     ) {
 
-        if (isLoading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-                    .background(Color.White)
-            ) {
-                MainAnimation(
-                    modifier = Modifier
-                        .width(250.dp)
-                        .height(250.dp)
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                        .align(alignment = Alignment.Center), image = R.raw.re
-                )
-            }
-        } else {
-            LazyColumn() {
-                itemsIndexed(recipes) { index, item ->
-                    RecipeCardComponent(item, action = {
-                        Log.i("debug", item.id.toString())
-                        onRecipeClick(item.id)
-                    })
-                }
+
+        LazyColumn() {
+            itemsIndexed(recipes) { index, item ->
+                RecipeCardComponent(item, action = {
+                    Log.i("debug", item.id.toString())
+                    onRecipeClick(item.id)
+                })
             }
         }
-
     }
+
 }
 
 @Composable
@@ -275,7 +264,7 @@ fun RecommendedReceipt(recipe: Recipe) {
 @Composable
 fun RecipeCardComponent(
     recipe: com.example.recipesapp.model.Result,
-     action: () -> Unit,
+    action: () -> Unit,
 ) {
     Card(
         modifier = Modifier
