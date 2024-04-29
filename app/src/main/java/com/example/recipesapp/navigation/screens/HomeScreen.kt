@@ -1,6 +1,7 @@
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
@@ -39,7 +41,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
@@ -54,11 +56,21 @@ import com.example.recipesapp.navigation.Screen
 import com.example.recipesapp.viewModel.RecipeViewModel
 import com.example.recipesapp.viewModel.State
 
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import androidx.compose.ui.platform.LocalContext
+import com.example.recipesapp.R
+import com.example.recipesapp.assets.MainAnimation
+import com.example.recipesapp.components.RecipeCard
+import com.example.recipesapp.model.Result
+
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    idSelected : Int,
+    idSelected: Int,
     onIdSelectedChange: (Int) -> Unit
 ) {
     val viewModel: RecipeViewModel = hiltViewModel()
@@ -98,15 +110,13 @@ fun HomeScreen(
                     text = "Recipes",
                     modifier = Modifier.padding(start = 16.dp, top = 16.dp)
                 )
-                ListRecipes(
-                    recipes = data.results,
-                    isLoading = false,
+
+                ReceiptsComponent(data.results, isLoading = false,
                     idSelected = idSelected,
                     onRecipeClick = { clickedRecipeId ->
                         onIdSelectedChange(clickedRecipeId)
                         navController.navigate(Screen.Detail.route)
-                    }
-                )
+                    })
             }
         }
     }
@@ -191,17 +201,46 @@ fun RecommendationsComponent(recipes: List<Recipe>) {
 }
 
 @Composable
-fun ReceiptsComponent(recipes: List<Recipe>) {
+fun ReceiptsComponent(
+    recipes: List<Result>,
+    modifier: Modifier = Modifier,
+    isLoading: Boolean,
+    idSelected: Int,
+    onRecipeClick: (Int) -> Unit // Click listener for recipe cards
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight(),
     ) {
-        LazyColumn {
-            items(recipes) {
-                RecipeCardComponent(recipeName = it.title, description = it.sourceName)
+
+        if (isLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .background(Color.White)
+            ) {
+                MainAnimation(
+                    modifier = Modifier
+                        .width(250.dp)
+                        .height(250.dp)
+                        .fillMaxWidth()
+                        .fillMaxHeight()
+                        .align(alignment = Alignment.Center), image = R.raw.re
+                )
+            }
+        } else {
+            LazyColumn() {
+                itemsIndexed(recipes) { index, item ->
+                    RecipeCardComponent(item, action = {
+                        Log.i("debug", item.id.toString())
+                        onRecipeClick(item.id)
+                    })
+                }
             }
         }
+
     }
 }
 
@@ -235,35 +274,39 @@ fun RecommendedReceipt(recipe: Recipe) {
 
 @Composable
 fun RecipeCardComponent(
-    recipeName: String = "Recipe Name",
-    description: String = "Description",
-    category: String = "Category",
-    onCategoryClicked: () -> Unit = {}
+    recipe: com.example.recipesapp.model.Result,
+     action: () -> Unit,
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .height(100.dp)
-            .padding(8.dp),
+            .padding(8.dp)
+            .clickable { action() }
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(recipe.image)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = "Recipe Image",
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxHeight()
                     .width(80.dp)
-                    .background(Color.Cyan),
             )
 
             Spacer(modifier = Modifier.width(16.dp))
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = recipeName,
+                    text = recipe.title,
                     style = MaterialTheme.typography.titleSmall,
                     color = Color.Black
                 )
                 Text(
-                    text = description,
+                    text = recipe.imageType,
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.Gray
                 )
@@ -271,6 +314,7 @@ fun RecipeCardComponent(
         }
     }
 }
+
 
 /*
 @Preview(showBackground = true)
