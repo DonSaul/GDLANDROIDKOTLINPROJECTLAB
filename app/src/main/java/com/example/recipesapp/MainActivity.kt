@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import com.example.recipesapp.components.ListRecipes
 import com.example.recipesapp.components.RecipeCard
+import com.example.recipesapp.components.RecipeDetail
 import com.example.recipesapp.components.TextField
 import com.example.recipesapp.data.IdRecipe
 import com.example.recipesapp.data.RetrofitServiceFactory
@@ -37,7 +38,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             RecipesAppTheme {
-                DetailViewScreenEx(id = 1460497)
+                RecipeDetail(id = 1460497)
             }
         }
     }
