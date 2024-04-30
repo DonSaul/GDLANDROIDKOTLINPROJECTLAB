@@ -61,6 +61,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.sp
 import com.example.recipesapp.R
 import com.example.recipesapp.assets.MainAnimation
 import com.example.recipesapp.components.RecipeCard
@@ -75,6 +76,8 @@ fun HomeScreen(
 ) {
     val viewModel: RecipeViewModel = hiltViewModel()
     val uiState = viewModel.state.collectAsState()
+    val uiState2 = viewModel.stateR.collectAsState().value
+    var searchText by remember { mutableStateOf("") }
 
     Column(modifier = modifier.fillMaxSize()) {
         when (uiState.value) {
@@ -102,10 +105,17 @@ fun HomeScreen(
 
             is State.Success -> {
                 val data = (uiState.value as State.Success).data
+                val dataRecomendations = (uiState2 as State.Success).data
                 SearchBar(
+                    searchString=searchText,
                     placeholder = "Search recipes...",
-                    action = { query -> viewModel.getSearchRecipe2(query) }
+                    action = { searchString -> viewModel.getSearchRecipe2(searchString) }
                 )
+                Text(
+                    text = "Recommendations",
+                    modifier = Modifier.padding(start = 16.dp, top = 16.dp)
+                )
+                RecommendationsComponent(dataRecomendations.recipes)
                 Text(
                     text = "Recipes",
                     modifier = Modifier.padding(start = 16.dp, top = 16.dp)
@@ -124,6 +134,7 @@ fun HomeScreen(
 
 @Composable
 fun SearchBar(
+    searchString: String,
     placeholder: String,
     action: (String) -> Unit // Update the action parameter to accept a String parameter
 ) {
@@ -257,15 +268,26 @@ fun RecommendedReceipt(recipe: Recipe) {
             shape = RoundedCornerShape(16.dp),
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(recipe.image)
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = "Recipe Image",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .fillMaxWidth()
+                )
             }
         }
 
         Column(
             modifier = Modifier
-                .padding(16.dp, 0.dp),
+                .padding(16.dp),
         ) {
-            Text(text = (recipe.title))
-            Text(text = (recipe.license))
+            Text(modifier = Modifier.fillMaxWidth().width(110.dp), fontSize = 13.sp, text = (recipe.title))
+            //Text(text = (recipe.license))
 
         }
     }

@@ -32,7 +32,7 @@ class RecipeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            //getRecipesRandom()
+            getRecipesRandom()
             getSearchRecipes()
         }
     }
@@ -61,7 +61,7 @@ class RecipeViewModel @Inject constructor(
         _stateR.tryEmit(State.Loading)
         try {
             val limitLicense = true
-            val tags = "vegetarian,dessert"
+            val tags = ""
             val number = 10
 
             val result = getRandomRecipesUseCase.invoke(
