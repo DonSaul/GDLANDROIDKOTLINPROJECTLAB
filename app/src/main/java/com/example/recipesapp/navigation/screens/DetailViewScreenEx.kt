@@ -116,17 +116,24 @@ fun DetailViewScreen(navController: NavController, id: Int) {
     val viewModel: RecipeByIdViewModel = hiltViewModel()
     val uiState = viewModel.state.collectAsState()
     val context = LocalContext.current
-    val recipe = (uiState.value as State.Success).data
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(text = "${recipe?.title}") }, navigationIcon = {
-                IconButton(onClick = { navController.popBackStack() }) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBack, contentDescription = "Back"
-                    )
-                }
-            })
+            TopAppBar(
+                title = { Text(text = "Detail recipe") },
+                modifier = Modifier.background(LightBrown),
+                navigationIcon = {
+                    IconButton(onClick = {
+                        navController.popBackStack()
+                        navController.navigate(Screen.Home.route)
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack, contentDescription = "Back"
+                        )
+                    }
+                })
+
+
         },
     ) { innerPadding ->
         Card(
@@ -146,13 +153,15 @@ fun DetailViewScreen(navController: NavController, id: Int) {
             when (uiState.value) {
                 is State.Loading -> {
                     Column(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier
+                            .background(LightBrown)
+                            .fillMaxSize(),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         MainAnimation(
                             modifier = Modifier
-                                .width(250.dp)
+                                .width(350.dp)
                                 .height(250.dp)
                                 .fillMaxWidth()
                                 .fillMaxHeight()
@@ -164,12 +173,14 @@ fun DetailViewScreen(navController: NavController, id: Int) {
 
                 is State.Error -> {
                     Column(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier
+                            .background(LightBrown)
+                            .fillMaxSize(),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(text = "Error")
-                        Text(text = (uiState.value as State.Error).error)
+                        Text(text = "Error", color = Color.White)
+                        Text(text = (uiState.value as State.Error).error, color = Color.White)
                     }
                 }
 

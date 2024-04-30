@@ -13,6 +13,7 @@ import androidx.navigation.NavController
 import com.example.recipesapp.R
 import com.example.recipesapp.assets.MainAnimation
 import com.example.recipesapp.navigation.Screen
+import com.example.recipesapp.ui.theme.LightBrown
 import kotlinx.coroutines.delay
 
 @Composable
@@ -29,7 +30,7 @@ fun LoadingScreen(navController: NavController) {
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .background(Color.White)
+            .background(LightBrown)
     ) {
         MainAnimation(
             modifier = Modifier
