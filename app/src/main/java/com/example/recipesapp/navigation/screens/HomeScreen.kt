@@ -105,12 +105,14 @@ fun HomeScreen(
                             navController.navigate(Screen.Detail.route)
                         })
                         RecipeList(data.results,
-                            isLoading = false,
-                            idSelected = idSelected,
                             onRecipeClick = { clickedRecipeId ->
                                 onIdSelectedChange(clickedRecipeId)
                                 navController.navigate(Screen.Detail.route)
-                            })
+                            },
+                            onAddFavorite = {
+                                /* TODO: Favorite method */
+                            }
+                        )
                     }
                 }
             }

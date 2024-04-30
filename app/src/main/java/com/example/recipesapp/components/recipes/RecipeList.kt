@@ -1,10 +1,11 @@
 package com.example.recipesapp.components.recipes
 
 import android.util.Log
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
@@ -17,11 +18,7 @@ import com.example.recipesapp.model.Result
 
 @Composable
 fun RecipeList(
-    recipes: List<Result>,
-    modifier: Modifier = Modifier,
-    isLoading: Boolean,
-    idSelected: Int,
-    onRecipeClick: (Int) -> Unit
+    recipes: List<Result>, onRecipeClick: (Int) -> Unit, onAddFavorite: () -> Unit
 ) {
     Text(
         text = "Recipes",
@@ -33,12 +30,23 @@ fun RecipeList(
             .fillMaxHeight(),
     ) {
 
-        LazyColumn() {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(vertical = 12.dp),
+        ) {
             itemsIndexed(recipes) { _, item ->
-                RecipeCard(item, action = {
-                    Log.i("debug", item.id.toString())
-                    onRecipeClick(item.id)
-                })
+                SwipeItem(item,
+                    onAddFavorite = {
+                        Log.i("favorite", item.id.toString())
+                        // Temporal method
+                        onAddFavorite()
+                        /* TODO : Add favorite method db */
+
+                    },
+                    action = {
+                        Log.i("debug", item.id.toString())
+                        onRecipeClick(item.id)
+                    })
             }
         }
     }
