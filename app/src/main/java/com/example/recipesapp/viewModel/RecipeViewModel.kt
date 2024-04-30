@@ -21,11 +21,11 @@ class RecipeViewModel @Inject constructor(
     private val getSearchRecipesUseCase: GetSearchRecipesUseCase
 ) : ViewModel() {
 
-    //private val _state = MutableStateFlow<State<RecipesArray>>(State.Loading)
-    //val state = _state as StateFlow<State<RecipesArray>>
+    private val _stateR = MutableStateFlow<State<RecipesArray>>(State.Loading)
+    val stateR = _stateR as StateFlow<State<RecipesArray>>
 
-    val _recipes = MutableStateFlow<List<Recipe>>(emptyList())
-    val recipe = _recipes as StateFlow<List<Recipe>>
+    //val _recipesR = MutableStateFlow<List<Recipe>>(emptyList())
+    //val recipeR = _recipesR as StateFlow<List<Recipe>>
 
     private val _state = MutableStateFlow<State<RecipeSearch>>(State.Loading)
     val state = _state as StateFlow<State<RecipeSearch>>
@@ -37,12 +37,12 @@ class RecipeViewModel @Inject constructor(
         }
     }
 
-    fun getSearchRecipes(query: String = "fish") {
+    fun getSearchRecipes(query: String = "", diet: String = "") {
         viewModelScope.launch {
             _state.value = State.Loading
             try {
 
-                val result = getSearchRecipesUseCase.invoke(API_KEY,query)
+                val result = getSearchRecipesUseCase.invoke(API_KEY,query,diet)
                 _state.value = State.Success(result)
 
             } catch (e: Exception) {
@@ -57,8 +57,8 @@ class RecipeViewModel @Inject constructor(
         }
     }
 
-    /*suspend fun getRecipesRandom() {
-        _state.tryEmit(State.Loading)
+    suspend fun getRecipesRandom() {
+        _stateR.tryEmit(State.Loading)
         try {
             val limitLicense = true
             val tags = "vegetarian,dessert"
@@ -70,14 +70,14 @@ class RecipeViewModel @Inject constructor(
                 number,
                 "be0bdc6d7c5d4fa88cc8453fff432cb2"
             )
-            _state.tryEmit(State.Success(result))
-            _recipes.tryEmit(result.recipes as List<Recipe>)
+            _stateR.tryEmit(State.Success(result))
+            //_recipeR.tryEmit(result.recipes as List<Recipe>)
         } catch (e: Exception) {
             _state.tryEmit(State.Error(e.message.toString()))
         }
     }
 
-    fun searchRecipes(tags: String = "tacos") {
+    /*fun searchRecipes(tags: String = "tacos") {
         viewModelScope.launch {
             _state.value = State.Loading
             try {
