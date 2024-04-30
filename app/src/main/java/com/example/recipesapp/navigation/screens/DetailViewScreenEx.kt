@@ -161,7 +161,7 @@ fun DetailViewScreen(navController: NavController, id: Int) {
                     ) {
                         MainAnimation(
                             modifier = Modifier
-                                .width(350.dp)
+                                .width(400.dp)
                                 .height(250.dp)
                                 .fillMaxWidth()
                                 .fillMaxHeight()

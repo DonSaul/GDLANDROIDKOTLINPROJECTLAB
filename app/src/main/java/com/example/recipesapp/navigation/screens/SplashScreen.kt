@@ -34,7 +34,7 @@ fun LoadingScreen(navController: NavController) {
     ) {
         MainAnimation(
             modifier = Modifier
-                .width(250.dp)
+                .width(400.dp)
                 .height(250.dp)
                 .fillMaxWidth()
                 .fillMaxHeight()
