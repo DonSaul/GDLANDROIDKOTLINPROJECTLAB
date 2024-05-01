@@ -1,6 +1,5 @@
 package com.example.recipesapp.components.common
 
-import ButtonBackground
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FiniteAnimationSpec
@@ -18,10 +17,6 @@ import com.exyte.animatednavbar.utils.rotationWithTopCenterAnchor
 import kotlin.math.PI
 import kotlin.math.sin
 
-data class ButtonBackground(
-    @DrawableRes val icon: Int,
-    val offset: DpOffset = DpOffset.Zero
-)
 
 @Stable
 abstract class ColorButtonAnimation(

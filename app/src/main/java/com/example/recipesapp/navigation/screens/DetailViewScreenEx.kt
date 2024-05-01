@@ -34,6 +34,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.Role
 import com.example.recipesapp.R
 import com.example.recipesapp.assets.MainAnimation
+import com.example.recipesapp.components.common.BottomNavigation
 import com.example.recipesapp.navigation.Screen
 
 @Composable
@@ -132,9 +133,10 @@ fun DetailViewScreen(navController: NavController, id: Int) {
                         )
                     }
                 })
-
-
         },
+        bottomBar = {
+            BottomNavigation(navController)
+        }
     ) { innerPadding ->
         Card(
             shape = RoundedCornerShape(16.dp),
