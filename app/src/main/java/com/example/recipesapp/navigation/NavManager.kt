@@ -15,22 +15,31 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.recipesapp.navigation.screens.DetailViewScreen
+import com.example.recipesapp.navigation.screens.LoadingScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SetUpNavGraph(navController: NavHostController) {
     var mContext = LocalContext.current
 
-    Column(modifier = Modifier.fillMaxSize()){
+    Column(modifier = Modifier.fillMaxSize()) {
         var idSelected by remember { mutableStateOf(0) }
         NavHost(
             navController = navController,
-            startDestination = Screen.Home.route,
-            modifier = Modifier.fillMaxWidth().weight(1f)
+            startDestination = Screen.Splash.route,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
         ) {
+
+            composable(Screen.Splash.route) {
+                LoadingScreen(navController = navController)
+            }
             composable(route = Screen.Home.route) {
                 HomeScreen(
-                    modifier = Modifier.fillMaxWidth().weight(1f),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
                     idSelected = idSelected,
                     navController = navController
                 ) { newIdSelected ->

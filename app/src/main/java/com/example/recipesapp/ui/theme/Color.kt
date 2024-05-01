@@ -12,3 +12,5 @@ val Pink40 = Color(0xFF7D5260)
 
 val LightBrown = Color(4293714384)
 val YellowButton = Color(4294829183)
+val RecipeCard = Color(0xFFF8F1E8)
+val BorderRecipeCard = Color(0xFFE1E1E1)
