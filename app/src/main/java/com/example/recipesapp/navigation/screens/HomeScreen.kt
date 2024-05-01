@@ -24,6 +24,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -57,6 +58,7 @@ import com.example.recipesapp.viewModel.RecipeViewModel
 import com.example.recipesapp.viewModel.State
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -78,6 +80,7 @@ fun HomeScreen(
     val uiState = viewModel.state.collectAsState()
     val uiState2 = viewModel.stateR.collectAsState().value
     var searchText by remember { mutableStateOf("") }
+    var selectedItems by remember { mutableStateOf(List(11) { false }) }
 
     Column(modifier = modifier.fillMaxSize()) {
         when (uiState.value) {
@@ -108,8 +111,9 @@ fun HomeScreen(
                 val dataRecomendations = (uiState2 as State.Success).data
                 SearchBar(
                     searchString=searchText,
+                    selectedItems = selectedItems,
                     placeholder = "Search recipes...",
-                    action = { searchString -> viewModel.getSearchRecipe2(searchString) }
+                    action = { searchString, selectedItems -> viewModel.getSearchRecipes(searchString, selectedItems) }
                 )
                 Text(
                     text = "Recommendations",
@@ -132,11 +136,28 @@ fun HomeScreen(
     }
 }
 
+
+private fun selectedItemsToString(selectedItems: List<Boolean>): String {
+    val selectedItemsStringList = mutableListOf<String>()
+    val menuItems = listOf(
+        "Gluten Free", "Ketogenic", "Vegetarian", "Lacto-Vegetarian",
+        "Ovo-Vegetarian", "Vegan", "Pescarian", "Paleo", "Primal", "Low FODMAP", "Whole 30"
+    )
+    for ((index, isSelected) in selectedItems.withIndex()) {
+        if (isSelected) {
+            selectedItemsStringList.add(menuItems[index])
+        }
+    }
+
+    return selectedItemsStringList.joinToString(", ")
+}
+
 @Composable
 fun SearchBar(
     searchString: String,
     placeholder: String,
-    action: (String) -> Unit // Update the action parameter to accept a String parameter
+    selectedItems: List<Boolean>, // Agregar parámetro para los elementos seleccionados
+    action: (String, String) -> Unit // Update the action parameter to accept a String parameter
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     var searchText by remember { mutableStateOf("") }
@@ -146,6 +167,11 @@ fun SearchBar(
     val screenWidth = configuration.screenWidthDp.dp
     val offsetWidth = screenWidth - 60.dp
 
+    val menuItems = listOf("Gluten Free", "Ketogenic", "Vegetarian", "Lacto-Vegetarian",
+        "Ovo-Vegetarian", "Vegan", "Pescarian", "Paleo", "Primal", "Low FODMAP", "Whole 30")
+
+    val selectedItems = remember { mutableStateOf(List(menuItems.size) { false }) }
+
     Row(modifier = Modifier.fillMaxWidth()) {
         OutlinedTextField(
             value = searchText,
@@ -154,7 +180,7 @@ fun SearchBar(
             singleLine = true,
             trailingIcon = {
                 IconButton(onClick = {
-                    action(searchText)
+                    action(searchText, selectedItemsToString(selectedItems.value))
                 }) {
                     Icon(
                         imageVector = Icons.Default.Search,
@@ -164,7 +190,7 @@ fun SearchBar(
             },
             keyboardActions = KeyboardActions(onSearch = {
                 keyboardController?.hide()
-                action(searchText)
+                action(searchText, selectedItemsToString(selectedItems.value))
             }),
             modifier = Modifier.weight(1f)
         )
@@ -184,11 +210,29 @@ fun SearchBar(
                 y = 20.dp
             )
         ) {
-            DropdownMenuItem(onClick = {
-                menuExpanded = false
-            },
-                text = { Text(text = "vaors") }
-            )
+            menuItems.forEachIndexed { index, item ->
+                DropdownMenuItem( text = {  },
+                    onClick = {
+                        selectedItems.value = selectedItems.value.toMutableList().apply {
+                            this[index] = !this[index]
+                        }
+                    },
+                    modifier = Modifier.padding(top = 1.dp, bottom = 1.dp)
+                )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Checkbox(
+                            checked = selectedItems.value[index],
+                            onCheckedChange = { isChecked ->
+                                selectedItems.value = selectedItems.value.toMutableList().apply {
+                                    this[index] = isChecked
+                                }
+                            }
+                        )
+                        Spacer(modifier = Modifier.width(2.dp))
+                        Text(text = item)
+
+                }
+            }
         }
     }
 }
@@ -286,7 +330,9 @@ fun RecommendedReceipt(recipe: Recipe) {
             modifier = Modifier
                 .padding(16.dp),
         ) {
-            Text(modifier = Modifier.fillMaxWidth().width(110.dp), fontSize = 13.sp, text = (recipe.title))
+            Text(modifier = Modifier
+                .fillMaxWidth()
+                .width(110.dp), fontSize = 13.sp, text = (recipe.title))
             //Text(text = (recipe.license))
 
         }
