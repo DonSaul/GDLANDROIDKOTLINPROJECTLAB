@@ -125,7 +125,12 @@ fun HomeScreen(
                     text = "Recommendations",
                     modifier = Modifier.padding(start = 16.dp, top = 16.dp)
                 )
-                RecommendationsComponent(dataRecomendations.recipes)
+                RecommendationsComponent(dataRecomendations.recipes,
+                        idSelected = idSelected,
+                        onRecipeClick = { clickedRecipeId ->
+                        onIdSelectedChange(clickedRecipeId)
+                        navController.navigate(Screen.Detail.route)
+                    })
                 Text(
                     text = "Recipes",
                     modifier = Modifier.padding(start = 16.dp, top = 16.dp)
@@ -254,7 +259,11 @@ fun SearchBar(
 }
 
 @Composable
-fun RecommendationsComponent(recipes: List<Recipe>) {
+fun RecommendationsComponent(
+    recipes: List<Recipe>,
+    idSelected: Int,
+    onRecipeClick: (Int) -> Unit // Click listener for recipe cards
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -263,8 +272,11 @@ fun RecommendationsComponent(recipes: List<Recipe>) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         LazyRow {
-            items(recipes) {
-                RecommendedReceipt(it)
+            itemsIndexed(recipes) {index, item ->
+                RecommendedReceipt(item,action = {
+                    Log.i("debug", item.id.toString())
+                    onRecipeClick(item.id)
+                })
             }
         }
 
@@ -316,7 +328,7 @@ fun ReceiptsComponent(
 }
 
 @Composable
-fun RecommendedReceipt(recipe: Recipe) {
+fun RecommendedReceipt(recipe: Recipe, action: () -> Unit,) {
     Column {
         Card(
             modifier = Modifier
@@ -324,7 +336,8 @@ fun RecommendedReceipt(recipe: Recipe) {
                     width = 160.dp,
                     height = 160.dp
                 )
-                .padding(10.dp),
+                .padding(10.dp)
+                .clickable { action() },
             shape = RoundedCornerShape(16.dp),
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
