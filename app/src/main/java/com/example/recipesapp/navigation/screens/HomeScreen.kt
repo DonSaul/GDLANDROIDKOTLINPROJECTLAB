@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
@@ -32,7 +33,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -63,6 +66,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.sp
 import com.example.recipesapp.R
 import com.example.recipesapp.assets.MainAnimation
@@ -109,6 +114,7 @@ fun HomeScreen(
             is State.Success -> {
                 val data = (uiState.value as State.Success).data
                 val dataRecomendations = (uiState2 as State.Success).data
+
                 SearchBar(
                     searchString=searchText,
                     selectedItems = selectedItems,
@@ -172,13 +178,19 @@ fun SearchBar(
 
     val selectedItems = remember { mutableStateOf(List(menuItems.size) { false }) }
 
-    Row(modifier = Modifier.fillMaxWidth()) {
+    Row(modifier = Modifier.fillMaxWidth().padding(10.dp)) {
         OutlinedTextField(
             value = searchText,
             onValueChange = { searchText = it },
-            placeholder = { Text(placeholder) },
+            label = { Text(text = "Search")},
             singleLine = true,
-            trailingIcon = {
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "Search icon"
+                )
+            },
+            /*trailingIcon = {
                 IconButton(onClick = {
                     action(searchText, selectedItemsToString(selectedItems.value))
                 }) {
@@ -187,7 +199,11 @@ fun SearchBar(
                         contentDescription = "Search icon"
                     )
                 }
-            },
+            },*/
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Search
+            ),
             keyboardActions = KeyboardActions(onSearch = {
                 keyboardController?.hide()
                 action(searchText, selectedItemsToString(selectedItems.value))
