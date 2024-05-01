@@ -1,9 +1,11 @@
 package com.example.recipesapp.components.recipes
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -20,6 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.DpOffset
@@ -68,14 +71,18 @@ fun SearchBar(
             }),
             modifier = Modifier.weight(1f)
         )
-
         IconButton(
             onClick = { menuExpanded = !menuExpanded },
-            modifier = Modifier.weight(0.2f)
+            modifier = Modifier
+                .weight(0.2f)
+                .border(1.dp, Color.Gray, RoundedCornerShape(4.dp))
+                .background(Color.White)
+                .padding(4.dp)
         ) {
             Icon(imageVector = Icons.Default.MoreVert, contentDescription = "More options")
         }
 
+        /* Filtrado por Dieta - DropDownMenu */
         DropdownMenu(
             expanded = menuExpanded,
             onDismissRequest = { menuExpanded = false },
