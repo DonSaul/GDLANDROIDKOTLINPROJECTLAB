@@ -16,12 +16,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.model.Result
 import com.example.recipesapp.ui.theme.BorderRecipeCard
 import com.example.recipesapp.ui.theme.RecipeCard
 
 @Composable
-fun RecommendedRecipe(recipe: Result, action: () -> Unit) {
+fun RecommendedRecipe(recipe: Recipe, action: () -> Unit) {
     Card(
         modifier = Modifier
             .padding(8.dp)

@@ -9,8 +9,9 @@ import javax.inject.Inject
 class RecipeSearchRepositoryImpl @Inject constructor(val api: RecipesApi) : RecipeSearchRepository {
     override suspend fun getRecipeSearch1(
         apiKey: String,
-        query: String
+        query: String,
+        diet: String
     ): Response<RecipeSearch> {
-        return api.listRecipes(apiKey = apiKey,query = query)
+        return api.listRecipes(apiKey = apiKey,query = query, diet = diet)
     }
 }

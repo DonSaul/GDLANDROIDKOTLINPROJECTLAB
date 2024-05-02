@@ -14,7 +14,8 @@ interface RecipesApi {
     @GET("complexSearch")
     suspend fun listRecipes(
         @Query("apiKey") apiKey: String,
-        @Query("query") query: String
+        @Query("query") query: String,
+        @Query("diet") diet: String
     ): Response<RecipeSearch>
 
     @GET("{id}/information")

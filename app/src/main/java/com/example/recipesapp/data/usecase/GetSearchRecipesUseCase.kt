@@ -10,9 +10,10 @@ class GetSearchRecipesUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         apiKey: String,
-        query: String
+        query: String,
+        diet: String
     ): RecipeSearch {
-        val response = recipeSearchRepository.getRecipeSearch1(apiKey = apiKey, query = query)
+        val response = recipeSearchRepository.getRecipeSearch1(apiKey = apiKey, query = query, diet = diet)
         if(response.body() == null){
             if(response.code() == 404){
                 throw Exception("No recipes found")
@@ -26,6 +27,6 @@ class GetSearchRecipesUseCase @Inject constructor(
                 throw Exception("No recipes found")
             }
         }
-        return recipeSearchRepository.getRecipeSearch1(apiKey, query).body()!!
+        return recipeSearchRepository.getRecipeSearch1(apiKey, query, diet).body()!!
     }
 }

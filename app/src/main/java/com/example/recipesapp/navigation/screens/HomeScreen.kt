@@ -71,6 +71,8 @@ fun HomeScreen(
 ) {
     val viewModel: RecipeViewModel = hiltViewModel()
     val uiState = viewModel.state.collectAsState()
+    val uiStateR = viewModel.stateR.collectAsState().value
+
     Scaffold(
         topBar = {
             SearchBar(placeholder = "Search recipes...",
@@ -121,12 +123,13 @@ fun HomeScreen(
 
                 is State.Success -> {
                     val data = (uiState.value as State.Success).data
+                    val dataRecommendations = (uiStateR as State.Success).data
                     Column(
                         modifier = Modifier
                             .background(LightBrown)
                             .padding(10.dp, 0.dp)
                     ) {
-                        RecommendedRecipeList(data.results, onRecipeClick = { clickedRecipeId ->
+                        RecommendedRecipeList(dataRecommendations.recipes, onRecipeClick = { clickedRecipeId ->
                             onIdSelectedChange(clickedRecipeId)
                             navController.navigate(Screen.Detail.route)
                         })
