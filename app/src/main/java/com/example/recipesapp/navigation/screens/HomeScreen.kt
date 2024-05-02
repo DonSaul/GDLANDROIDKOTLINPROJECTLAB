@@ -1,9 +1,12 @@
+import android.view.animation.OvershootInterpolator
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,12 +33,34 @@ import com.example.recipesapp.components.recipes.RecommendedRecipeList
 import com.example.recipesapp.ui.theme.LightBrown
 import com.example.recipesapp.components.recipes.SearchBar
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Surface
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Settings
 
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.material3.Icon
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpOffset
+import com.example.recipesapp.components.common.BellColorButton
+import com.example.recipesapp.components.common.BottomNavigation
+import com.example.recipesapp.ui.theme.LightGray
+import com.example.recipesapp.ui.theme.MediumBrown
+import com.example.recipesapp.ui.theme.RoyalGray
+import com.exyte.animatednavbar.AnimatedNavigationBar
+import com.exyte.animatednavbar.animation.balltrajectory.Teleport
+import com.exyte.animatednavbar.animation.indendshape.Height
+import com.exyte.animatednavbar.items.wigglebutton.WiggleButton
+
 
 @Composable
 fun HomeScreen(
@@ -46,14 +71,15 @@ fun HomeScreen(
 ) {
     val viewModel: RecipeViewModel = hiltViewModel()
     val uiState = viewModel.state.collectAsState()
-
     Scaffold(
         topBar = {
             SearchBar(placeholder = "Search recipes...",
                 action = { query -> viewModel.getSearchRecipe2(query) })
         },
-
-        ) { innerPadding ->
+        bottomBar = {
+            BottomNavigation(navController)
+        }
+    ) { innerPadding ->
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -120,4 +146,9 @@ fun HomeScreen(
     }
 }
 
+enum class ScreenEnum(val route: String, val icon: ImageVector, val title: String) {
+    Home("home", Icons.Filled.Home, Screen.Home.title),
+    Favorites("favorites", Icons.Filled.Favorite, "Favorites"),
+    Settings("settings", Icons.Filled.Settings, "Settings")
+}
 
