@@ -95,6 +95,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.compose.navigation)
     implementation(libs.compose.constraint)
-
+    implementation("com.exyte:animated-navigation-bar:1.0.0")
 
 }
