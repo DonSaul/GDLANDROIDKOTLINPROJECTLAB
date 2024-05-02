@@ -36,6 +36,8 @@ import com.example.recipesapp.R
 import com.example.recipesapp.assets.MainAnimation
 import com.example.recipesapp.components.common.BottomNavigation
 import com.example.recipesapp.navigation.Screen
+import com.example.recipesapp.utils.getIngredients
+import com.example.recipesapp.utils.htmlToAnnotatedString
 
 @Composable
 @Preview
@@ -201,8 +203,9 @@ fun DetailViewScreen(navController: NavController, id: Int) {
                             style = MaterialTheme.typography.titleLarge,
                             modifier = Modifier.padding(bottom = 16.dp)
                         )
+                        val summaryText = htmlToAnnotatedString(recipe?.summary.toString())
                         Text(
-                            text = "${recipe?.summary}",
+                            text = summaryText,
                             style = MaterialTheme.typography.bodySmall,
                             //modifier = Modifier.padding(bottom = 16.dp)
                         )
@@ -237,8 +240,9 @@ fun DetailViewScreen(navController: NavController, id: Int) {
                                 style = MaterialTheme.typography.titleMedium,
                                 modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
                             )
+                            val ingrdnt = getIngredients(recipe?.analyzedInstructions)
                             Text(
-                                text = "Lorem\nIpsum\nLatin",
+                                text = ingrdnt,
                                 style = MaterialTheme.typography.bodySmall,
                                 modifier = Modifier.padding(bottom = 4.dp)
                             )/*recipe.instructions.forEach { ingredient ->
@@ -266,8 +270,9 @@ fun DetailViewScreen(navController: NavController, id: Int) {
                                 style = MaterialTheme.typography.titleMedium,
                                 modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
                             )
+                            val summaryInstructions = htmlToAnnotatedString(recipe?.instructions.toString())
                             Text(
-                                text = "${recipe?.instructions}",
+                                text = summaryInstructions,
                                 style = MaterialTheme.typography.bodySmall,
                                 modifier = Modifier.padding(bottom = 4.dp)
                             )/*recipe?.instructions.forEach{ instruction ->

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -23,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
@@ -32,12 +34,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.example.recipesapp.ui.theme.LightBrown
+import androidx.compose.material3.Checkbox
 
 
 @Composable
 fun SearchBar(
     placeholder: String,
-    action: (String) -> Unit
+    action: (String, String) -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     var searchText by remember { mutableStateOf("") }
@@ -46,6 +49,11 @@ fun SearchBar(
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
     val offsetWidth = screenWidth - 60.dp
+
+    val menuItems = listOf("Gluten Free", "Ketogenic", "Vegetarian", "Lacto-Vegetarian",
+        "Ovo-Vegetarian", "Vegan", "Pescarian", "Paleo", "Primal", "Low FODMAP", "Whole 30")
+
+    val selectedItems = remember { mutableStateOf(List(menuItems.size) { false }) }
 
     Row(
         modifier = Modifier
@@ -61,7 +69,7 @@ fun SearchBar(
             singleLine = true,
             trailingIcon = {
                 IconButton(onClick = {
-                    action(searchText)
+                    action(searchText, selectedItemsToString(selectedItems.value))
                 }) {
                     Icon(
                         imageVector = Icons.Default.Search,
@@ -75,7 +83,7 @@ fun SearchBar(
             ),
             keyboardActions = KeyboardActions(onSearch = {
                 keyboardController?.hide()
-                action(searchText)
+                action(searchText,selectedItemsToString(selectedItems.value))
             }),
             modifier = Modifier.weight(1f)
         )
@@ -100,15 +108,47 @@ fun SearchBar(
                 y = 20.dp
             )
         ) {
-            DropdownMenuItem(onClick = {
-                menuExpanded = false
-            },
-                text = { Text(text = "vaors") }
-            )
+            menuItems.forEachIndexed { index, item ->
+                DropdownMenuItem( text = {  },
+                    onClick = {
+                        selectedItems.value = selectedItems.value.toMutableList().apply {
+                            this[index] = !this[index]
+                        }
+                    },
+                    modifier = Modifier.padding(top = 1.dp, bottom = 1.dp)
+                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(
+                        checked = selectedItems.value[index],
+                        onCheckedChange = { isChecked ->
+                            selectedItems.value = selectedItems.value.toMutableList().apply {
+                                this[index] = isChecked
+                            }
+                        }
+                    )
+                    Spacer(modifier = Modifier.width(2.dp))
+                    Text(text = item)
+
+                }
+            }
         }
     }
 }
 
+private fun selectedItemsToString(selectedItems: List<Boolean>): String {
+    val selectedItemsStringList = mutableListOf<String>()
+    val menuItems = listOf(
+        "Gluten Free", "Ketogenic", "Vegetarian", "Lacto-Vegetarian",
+        "Ovo-Vegetarian", "Vegan", "Pescarian", "Paleo", "Primal", "Low FODMAP", "Whole 30"
+    )
+    for ((index, isSelected) in selectedItems.withIndex()) {
+        if (isSelected) {
+            selectedItemsStringList.add(menuItems[index])
+        }
+    }
+
+    return selectedItemsStringList.joinToString(", ")
+}
 
 
 
