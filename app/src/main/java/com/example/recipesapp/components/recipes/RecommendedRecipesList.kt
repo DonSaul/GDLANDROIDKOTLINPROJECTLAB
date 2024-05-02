@@ -8,16 +8,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.model.Result
 
 @Composable
-fun RecommendedRecipeList(recipes: List<Result>, onRecipeClick: (Int) -> Unit) {
+fun RecommendedRecipeList(recipes: List<Recipe>, onRecipeClick: (Int) -> Unit) {
     Text(
         text = "Recomendations",
         style = MaterialTheme.typography.titleMedium,
@@ -30,10 +32,10 @@ fun RecommendedRecipeList(recipes: List<Result>, onRecipeClick: (Int) -> Unit) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         LazyRow {
-            items(recipes) {
-                RecommendedRecipe(it, action = {
-                    Log.i("debug", it.id.toString())
-                    onRecipeClick(it.id)
+            itemsIndexed(recipes) {index,item->
+                RecommendedRecipe(item, action = {
+                    //Log.i("debug", it.id.toString())
+                    onRecipeClick(item.id)
                 })
             }
         }

@@ -7,6 +7,7 @@ interface RecipeSearchRepository {
 
     suspend fun getRecipeSearch1(
         apiKey: String,
-        query: String
+        query: String,
+        diet: String
     ): Response<RecipeSearch>
 }
