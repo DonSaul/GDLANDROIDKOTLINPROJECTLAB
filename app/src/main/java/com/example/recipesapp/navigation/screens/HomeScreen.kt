@@ -76,7 +76,7 @@ fun HomeScreen(
     Scaffold(
         topBar = {
             SearchBar(placeholder = "Search recipes...",
-                action = { query -> viewModel.getSearchRecipe2(query) })
+                action = { query, query2 -> viewModel.getSearchRecipes(query, query2) })
         },
         bottomBar = {
             BottomNavigation(navController)
