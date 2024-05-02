@@ -3,6 +3,7 @@ package com.example.recipesapp.components.recipes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -78,12 +79,13 @@ fun SearchBar(
             }),
             modifier = Modifier.weight(1f)
         )
+        Spacer(modifier = Modifier.padding(6.dp, 0.dp))
         IconButton(
             onClick = { menuExpanded = !menuExpanded },
             modifier = Modifier
                 .weight(0.2f)
                 .border(1.dp, Color.Gray, RoundedCornerShape(4.dp))
-                .background(Color.White)
+                .background(LightBrown)
                 .padding(4.dp)
         ) {
             Icon(imageVector = Icons.Default.MoreVert, contentDescription = "More options")
