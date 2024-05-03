@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -38,10 +39,142 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.example.recipesapp.ui.theme.LightBrown
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SearchBar
+import androidx.compose.material3.SearchBarDefaults
+import com.example.recipesapp.data.HistoryEx
+import com.example.recipesapp.data.HistorySearch
+import com.example.recipesapp.ui.theme.MediumBrown
 
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SearchBarApp(placeholder: String,action: (String, String) -> Unit){
+    var text by remember { mutableStateOf("") }
+    var active by remember {
+        mutableStateOf(false)
+    }
+    var menuExpanded by remember { mutableStateOf(false) }
+    val menuItems = listOf("Gluten Free", "Ketogenic", "Vegetarian", "Lacto-Vegetarian",
+        "Ovo-Vegetarian", "Vegan", "Pescarian", "Paleo", "Primal", "Low FODMAP", "Whole 30")
+    val selectedItems = remember { mutableStateOf(List(menuItems.size) { false }) }
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp.dp
+    val offsetWidth = screenWidth - 60.dp
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(LightBrown)
+    ) {
+        SearchBar(
+            modifier = Modifier
+                .background(LightBrown)
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            query = text,
+            onQueryChange = { text = it },
+            onSearch = {
+
+                active = false
+                if (text.isNotEmpty()){
+                    HistoryEx.HistoryList.add(HistorySearch(text))
+                    action(text, selectedItemsToString(selectedItems.value))
+                }
+
+            },
+            colors = SearchBarDefaults.colors(MediumBrown),
+            active = active,
+            onActiveChange = { active = it },
+            placeholder = { Text(text = "Search") },
+            leadingIcon = {
+                IconButton(
+                    onClick = { menuExpanded = !menuExpanded },
+                    modifier = Modifier
+                ) {
+                    Icon(imageVector = Icons.Default.MoreVert, contentDescription = "More options")
+                }
+            },
+            trailingIcon = {
+                Row {
+                    if (active) {
+                        Icon(
+                            modifier = Modifier.clickable {
+                                if (text.isNotEmpty()) {
+                                    text = ""
+                                } else {
+                                    active = false
+                                }
+                            },
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "Close Icon"
+                        )
+
+                    }
+                }
+            }
+
+        ) {
+            HistoryEx.HistoryList.forEach {
+                Row(modifier = Modifier
+                    .padding(all = 14.dp)
+                    .clickable {
+                        text = it.search
+                        active = false
+                        action(text, selectedItemsToString(selectedItems.value))
+                    }) {
+                    Icon(
+                        modifier = Modifier.padding(end = 10.dp),
+                        imageVector = Icons.Default.History,
+                        contentDescription = "History Icon"
+                    )
+                    Text(text = it.search)
+                }
+            }
+        }
+
+        //Spacer(modifier = Modifier.padding(6.dp, 0.dp))
+
+
+        /* Filtrado por Dieta - DropDownMenu */
+        DropdownMenu(
+            expanded = menuExpanded,
+            onDismissRequest = { menuExpanded = false },
+            offset = DpOffset(
+                x = offsetWidth,
+                y = 20.dp
+            )
+        ) {
+            menuItems.forEachIndexed { index, item ->
+                DropdownMenuItem( text = {  },
+                    onClick = {
+                        selectedItems.value = selectedItems.value.toMutableList().apply {
+                            this[index] = !this[index]
+                        }
+                    },
+                    modifier = Modifier.padding(top = 1.dp, bottom = 1.dp)
+                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(
+                        checked = selectedItems.value[index],
+                        onCheckedChange = { isChecked ->
+                            selectedItems.value = selectedItems.value.toMutableList().apply {
+                                this[index] = isChecked
+                            }
+                        }
+                    )
+                    Spacer(modifier = Modifier.width(2.dp))
+                    Text(text = item)
+
+                }
+            }
+        }
+        Spacer(modifier = Modifier.padding(6.dp, 0.dp))
+    }
+}
 
 @Composable
-fun SearchBar(
+fun SearchBar2(
     placeholder: String,
     action: (String, String) -> Unit
 ) {
@@ -138,7 +271,7 @@ fun SearchBar(
     }
 }
 
-private fun selectedItemsToString(selectedItems: List<Boolean>): String {
+ fun selectedItemsToString(selectedItems: List<Boolean>): String {
     val selectedItemsStringList = mutableListOf<String>()
     val menuItems = listOf(
         "Gluten Free", "Ketogenic", "Vegetarian", "Lacto-Vegetarian",
