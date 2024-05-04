@@ -54,7 +54,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import com.example.recipesapp.data.HistoryEx
 import com.example.recipesapp.data.HistorySearch
 import com.example.recipesapp.ui.theme.MediumBrown
-import com.example.recipesapp.utils.summonList
 import kotlinx.coroutines.launch
 
 
