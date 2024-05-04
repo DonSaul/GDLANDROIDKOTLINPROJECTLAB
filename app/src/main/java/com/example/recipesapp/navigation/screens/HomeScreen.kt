@@ -1,9 +1,4 @@
-import android.view.animation.OvershootInterpolator
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,37 +26,31 @@ import com.example.recipesapp.assets.MainAnimation
 import com.example.recipesapp.components.recipes.RecipeList
 import com.example.recipesapp.components.recipes.RecommendedRecipeList
 import com.example.recipesapp.ui.theme.LightBrown
-import com.example.recipesapp.components.recipes.SearchBar
+//import com.example.recipesapp.components.recipes.SearchBar
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
-
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.runtime.Stable
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.DpOffset
-import com.example.recipesapp.components.common.BellColorButton
 import com.example.recipesapp.components.common.BottomNavigation
-import com.example.recipesapp.ui.theme.LightGray
-import com.example.recipesapp.ui.theme.MediumBrown
-import com.example.recipesapp.ui.theme.RoyalGray
-import com.exyte.animatednavbar.AnimatedNavigationBar
-import com.exyte.animatednavbar.animation.balltrajectory.Teleport
-import com.exyte.animatednavbar.animation.indendshape.Height
-import com.exyte.animatednavbar.items.wigglebutton.WiggleButton
+import com.example.recipesapp.components.recipes.SearchBarApp
+import kotlinx.coroutines.launch
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -72,15 +61,18 @@ fun HomeScreen(
     val viewModel: RecipeViewModel = hiltViewModel()
     val uiState = viewModel.state.collectAsState()
     val uiStateR = viewModel.stateR.collectAsState().value
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+    var showBottomSheet by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
-            SearchBar(placeholder = "Search recipes...",
+            SearchBarApp(placeholder = "Search recipes...",
                 action = { query, query2 -> viewModel.getSearchRecipes(query, query2) })
         },
         bottomBar = {
             BottomNavigation(navController)
-        }
+        },
     ) { innerPadding ->
         Column(
             modifier = modifier
@@ -146,6 +138,7 @@ fun HomeScreen(
                 }
             }
         }
+
     }
 }
 
@@ -154,4 +147,7 @@ enum class ScreenEnum(val route: String, val icon: ImageVector, val title: Strin
     Favorites("favorites", Icons.Filled.Favorite, "Favorites"),
     Settings("settings", Icons.Filled.Settings, "Settings")
 }
+
+
+
 
