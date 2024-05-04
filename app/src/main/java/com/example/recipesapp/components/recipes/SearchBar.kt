@@ -1,14 +1,18 @@
 package com.example.recipesapp.components.recipes
 
+import android.widget.ToggleButton
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -17,6 +21,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -40,11 +45,17 @@ import androidx.compose.ui.unit.dp
 import com.example.recipesapp.ui.theme.LightBrown
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
+import androidx.compose.material3.Switch
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.runtime.rememberCoroutineScope
 import com.example.recipesapp.data.HistoryEx
 import com.example.recipesapp.data.HistorySearch
 import com.example.recipesapp.ui.theme.MediumBrown
+import com.example.recipesapp.utils.summonList
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,6 +72,9 @@ fun SearchBarApp(placeholder: String,action: (String, String) -> Unit){
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
     val offsetWidth = screenWidth - 60.dp
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+    var showBottomSheet by remember { mutableStateOf(false) }
 
     Row(
         modifier = Modifier
@@ -89,7 +103,7 @@ fun SearchBarApp(placeholder: String,action: (String, String) -> Unit){
             placeholder = { Text(text = "Search") },
             leadingIcon = {
                 IconButton(
-                    onClick = { menuExpanded = !menuExpanded },
+                    onClick = {showBottomSheet = true},
                     modifier = Modifier
                 ) {
                     Icon(imageVector = Icons.Default.MoreVert, contentDescription = "More options")
@@ -146,7 +160,8 @@ fun SearchBarApp(placeholder: String,action: (String, String) -> Unit){
             )
         ) {
             menuItems.forEachIndexed { index, item ->
-                DropdownMenuItem( text = {  },
+                DropdownMenuItem(
+                    text = {  },
                     onClick = {
                         selectedItems.value = selectedItems.value.toMutableList().apply {
                             this[index] = !this[index]
@@ -154,22 +169,72 @@ fun SearchBarApp(placeholder: String,action: (String, String) -> Unit){
                     },
                     modifier = Modifier.padding(top = 1.dp, bottom = 1.dp)
                 )
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Checkbox(
-                        checked = selectedItems.value[index],
-                        onCheckedChange = { isChecked ->
-                            selectedItems.value = selectedItems.value.toMutableList().apply {
-                                this[index] = isChecked
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp)
+                ) {
+                    // First column
+                    Column(modifier = Modifier.weight(1f)) {
+                        Switch(
+                            checked = selectedItems.value[index],
+                            onCheckedChange = { isChecked ->
+                                selectedItems.value = selectedItems.value.toMutableList().apply {
+                                    this[index] = isChecked
+                                }
                             }
-                        }
-                    )
-                    Spacer(modifier = Modifier.width(2.dp))
-                    Text(text = item)
+                        )
+                    }
 
+                    Spacer(modifier = Modifier.width(8.dp)) // Espacio entre columnas
+
+                    // Segunda columna
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(text = item)
+
+                    }
                 }
             }
         }
         Spacer(modifier = Modifier.padding(6.dp, 0.dp))
+    }
+    if (showBottomSheet) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                showBottomSheet = false
+            },
+            sheetState = sheetState
+        ) {
+
+                menuItems.forEachIndexed { index, item ->
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp)
+                    ) {
+                        // First column
+                            Switch(
+                                checked = selectedItems.value[index],
+                                onCheckedChange = { isChecked ->
+                                    selectedItems.value = selectedItems.value.toMutableList().apply {
+                                        this[index] = isChecked
+                                    }
+                                }
+                            )
+
+
+                        Spacer(modifier = Modifier.width(8.dp)) // Espacio entre columnas
+
+                        // Segunda columna
+                            Text(text = item)
+
+
+                    }
+            }
+        }
     }
 }
 

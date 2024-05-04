@@ -29,14 +29,28 @@ import com.example.recipesapp.ui.theme.LightBrown
 //import com.example.recipesapp.components.recipes.SearchBar
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.recipesapp.components.common.BottomNavigation
 import com.example.recipesapp.components.recipes.SearchBarApp
+import kotlinx.coroutines.launch
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -47,6 +61,9 @@ fun HomeScreen(
     val viewModel: RecipeViewModel = hiltViewModel()
     val uiState = viewModel.state.collectAsState()
     val uiStateR = viewModel.stateR.collectAsState().value
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+    var showBottomSheet by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -55,7 +72,7 @@ fun HomeScreen(
         },
         bottomBar = {
             BottomNavigation(navController)
-        }
+        },
     ) { innerPadding ->
         Column(
             modifier = modifier
@@ -121,6 +138,7 @@ fun HomeScreen(
                 }
             }
         }
+
     }
 }
 
