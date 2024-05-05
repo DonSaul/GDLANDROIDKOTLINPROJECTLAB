@@ -3,6 +3,7 @@ package com.example.recipesapp.data
 import com.example.recipesapp.model.RecipeSearch
 import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.model.RecipesArray
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -31,6 +32,13 @@ interface RetroFitService {
         @Query("number") number: Int,
         @Query("apiKey") apiKey: String
     ): RecipesArray
+
+    @GET("informationBulk")
+    suspend fun getRecipesInformationBulk(
+        @Query("ids") ids: String,
+        @Query("apiKey") apiKey: String,
+        @Query("includeNutrition") includeNutrition: Boolean = false
+    ): Response<List<Recipe>>
 }
 
 object RetrofitServiceFactory {

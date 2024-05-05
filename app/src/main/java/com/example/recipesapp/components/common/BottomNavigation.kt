@@ -44,7 +44,7 @@ val wiggleButtonItems = listOf(
         isSelected = false,
         description = R.string.Heart,
         // TODO: Change with the Favorite Screen - Screen.Favorite.route
-        route = "Favorite"
+        route = Screen.Favorite.route,
 
     ),
     WiggleButtonItem(

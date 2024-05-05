@@ -3,11 +3,12 @@ package com.example.recipesapp.data.local
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.recipesapp.data.local.dao.RecipeDao
-import com.example.recipesapp.data.local.entities.Recipe
+import com.example.recipesapp.data.local.dao.FavoriteDao
 
-@TypeConverters(value = [RoomTypeConverters::class])
-@Database(entities = [Recipe::class], version = 1)
+import com.example.recipesapp.data.local.entities.FavoriteEntity
+
+
+@Database(entities = [FavoriteEntity::class], version = 2)
 abstract class RecipesDB: RoomDatabase(){
-    abstract fun recipeDao(): RecipeDao
+    abstract fun favoriteDao(): FavoriteDao
 }
