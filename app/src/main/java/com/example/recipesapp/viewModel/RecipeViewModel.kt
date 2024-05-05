@@ -1,8 +1,13 @@
 package com.example.recipesapp.viewModel
 
+import android.app.Application
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.room.Room
+import com.example.recipesapp.data.local.RecipesDB
+import com.example.recipesapp.data.local.entities.FavoriteEntity
 import com.example.recipesapp.data.usecase.GetRandomRecipesUseCase
 import com.example.recipesapp.data.usecase.GetSearchRecipesUseCase
 import com.example.recipesapp.model.Recipe
@@ -18,8 +23,17 @@ import javax.inject.Inject
 @HiltViewModel
 class RecipeViewModel @Inject constructor(
     private val getRandomRecipesUseCase: GetRandomRecipesUseCase,
-    private val getSearchRecipesUseCase: GetSearchRecipesUseCase
-) : ViewModel() {
+    private val getSearchRecipesUseCase: GetSearchRecipesUseCase,
+    application: Application
+) : AndroidViewModel(application) {
+
+    private val db = Room.databaseBuilder(
+        application,
+        RecipesDB::class.java,
+        "recipe_database"
+    ).build()
+
+    private val favoriteDao = db.favoriteDao()
 
     private val _stateR = MutableStateFlow<State<RecipesArray>>(State.Loading)
     val stateR = _stateR as StateFlow<State<RecipesArray>>
@@ -72,6 +86,13 @@ class RecipeViewModel @Inject constructor(
             _stateR.tryEmit(State.Success(result))
         } catch (e: Exception) {
             _state.tryEmit(State.Error(e.message.toString()))
+        }
+    }
+
+    fun addFavorite(recipeId: Int) {
+        viewModelScope.launch {
+            val favoriteEntity = FavoriteEntity(recipeId)
+            favoriteDao.insertFavorite(favoriteEntity)
         }
     }
 

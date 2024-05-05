@@ -130,12 +130,14 @@ fun HomeScreen(
                                 onIdSelectedChange(clickedRecipeId)
                                 navController.navigate(Screen.Detail.route)
                             },
-                            onAddFavorite = {
-                                /* TODO: Favorite method */
+                            onAddFavorite = { recipeId ->
+                                viewModel.addFavorite(recipeId)
                             }
                         )
                     }
                 }
+
+                else -> {}
             }
         }
 

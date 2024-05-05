@@ -1,16 +1,12 @@
 package com.example.recipesapp.navigation
 
+import FavoritesScreen
 import HomeScreen
-import android.util.Log
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -50,6 +46,16 @@ fun SetUpNavGraph(navController: NavHostController) {
             }
             composable(route = Screen.Detail.route) {
                 DetailViewScreen(navController = navController, id = idSelected)
+            }
+            composable(route = Screen.Favorite.route) {
+                FavoritesScreen(
+                    onRecipeClick = { recipeId ->
+                        // Navegar a la pantalla de detalles de la receta con el ID especificado
+                        idSelected = recipeId
+                        navController.navigate(Screen.Detail.route)
+                    },
+                    navController = navController
+                )
             }
         }
     }

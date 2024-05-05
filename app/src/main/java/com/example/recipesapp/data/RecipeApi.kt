@@ -31,4 +31,11 @@ interface RecipesApi {
         @Query("number") number: Int,
         @Query("apiKey") apiKey: String
     ): Response<RecipesArray>
+
+    @GET("informationBulk")
+    suspend fun getRecipesInformationBulk(
+        @Query("ids") ids: String,
+        @Query("apiKey") apiKey: String,
+        @Query("includeNutrition") includeNutrition: Boolean = false
+    ): Response<List<Recipe>>
 }
