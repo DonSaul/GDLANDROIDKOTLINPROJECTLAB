@@ -54,7 +54,7 @@ val wiggleButtonItems = listOf(
         isSelected = false,
         description = R.string.Circle,
         // TODO: Change with the Favorite Screen - Screen.Settings.route
-        route = "Settings"
+        route = Screen.Settings.route
 
     ),
 )
@@ -74,7 +74,7 @@ fun BottomNavigation(navController: NavController) {
 
                 // TODO: Change the "Favorite" and "Settings" with the corresponded routes
                 Screen.Favorite.route -> 1
-                "Settings" -> 2
+                Screen.Settings.route -> 2
                 else -> 0
             }
         )
