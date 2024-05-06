@@ -115,16 +115,21 @@ fun HomeScreen(
 
                 is State.Success -> {
                     val data = (uiState.value as State.Success).data
-                    val dataRecommendations = (uiStateR as State.Success).data
+                    val dataRecommendations = when (val currentRecommendationState = uiStateR) {
+                        is State.Success -> currentRecommendationState.data
+                        else -> null
+                    }
                     Column(
                         modifier = Modifier
                             .background(LightBrown)
                             .padding(10.dp, 0.dp)
                     ) {
-                        RecommendedRecipeList(dataRecommendations.recipes, onRecipeClick = { clickedRecipeId ->
-                            onIdSelectedChange(clickedRecipeId)
-                            navController.navigate(Screen.Detail.route)
-                        })
+                        if (dataRecommendations != null) {
+                            RecommendedRecipeList(dataRecommendations.recipes, onRecipeClick = { clickedRecipeId ->
+                                onIdSelectedChange(clickedRecipeId)
+                                navController.navigate(Screen.Detail.route)
+                            })
+                        }
                         RecipeList(data.results,
                             onRecipeClick = { clickedRecipeId ->
                                 onIdSelectedChange(clickedRecipeId)
@@ -136,11 +141,8 @@ fun HomeScreen(
                         )
                     }
                 }
-
-                else -> {}
             }
         }
-
     }
 }
 

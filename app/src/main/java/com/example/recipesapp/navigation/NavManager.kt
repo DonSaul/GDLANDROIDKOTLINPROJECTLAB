@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.recipesapp.navigation.screens.DetailViewScreen
 import com.example.recipesapp.navigation.screens.LoadingScreen
+import com.example.recipesapp.navigation.screens.SettingScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,6 +57,9 @@ fun SetUpNavGraph(navController: NavHostController) {
                     },
                     navController = navController
                 )
+            }
+            composable(route = Screen.Settings.route) {
+                SettingScreen(navController = navController)
             }
         }
     }

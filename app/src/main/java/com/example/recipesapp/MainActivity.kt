@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
 
-            RecipesAppTheme {
+            RecipesAppTheme (darkTheme = false) {
                 SetUpNavGraph(navController = navController)
             }
         }
