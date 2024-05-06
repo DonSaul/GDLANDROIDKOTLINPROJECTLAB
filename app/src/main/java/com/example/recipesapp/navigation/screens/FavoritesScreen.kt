@@ -21,15 +21,19 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import com.example.recipesapp.ui.theme.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -38,7 +42,6 @@ import com.example.recipesapp.assets.MainAnimation
 import com.example.recipesapp.components.common.BottomNavigation
 import com.example.recipesapp.components.recipes.FavoriteList
 import com.example.recipesapp.model.Recipe
-import com.example.recipesapp.ui.theme.LightBrown
 
 
 
@@ -61,7 +64,10 @@ fun FavoritesScreen(
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color(0xFFF0E9E0)
+                )
             )
         },
         bottomBar = {
@@ -76,7 +82,7 @@ fun FavoritesScreen(
             if (isLoading) {
                 Column(
                     modifier = Modifier
-                        .background(LightBrown)
+                        .background(MediumBrown)
                         .fillMaxSize(),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -91,8 +97,9 @@ fun FavoritesScreen(
                         image = R.raw.re
                     )
                 }
-            } else {
-                Column(modifier = Modifier.fillMaxSize()) {
+            }
+            else {
+                Row(modifier = Modifier.fillMaxSize().background(LightBrown)) {
                     FavoriteList(
                         recipes = recipes,
                         onRecipeClick = { recipeId ->

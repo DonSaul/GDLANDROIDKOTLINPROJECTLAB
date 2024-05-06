@@ -2,7 +2,6 @@ package com.example.recipesapp.navigation.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,13 +28,12 @@ import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.model.WinePairing
 import com.example.recipesapp.ui.theme.LightBrown
 import com.example.recipesapp.viewModel.State
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.semantics.Role
 import com.example.recipesapp.R
 import com.example.recipesapp.assets.MainAnimation
 import com.example.recipesapp.components.common.BottomNavigation
 import com.example.recipesapp.navigation.Screen
+import com.example.recipesapp.utils.getEquipment
 import com.example.recipesapp.utils.getIngredients
 import com.example.recipesapp.utils.htmlToAnnotatedString
 
@@ -134,7 +132,10 @@ fun DetailViewScreen(navController: NavController, id: Int) {
                             imageVector = Icons.Default.ArrowBack, contentDescription = "Back"
                         )
                     }
-                })
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color(0xFFF0E9E0)
+                ))
         },
         bottomBar = {
             BottomNavigation(navController)
@@ -234,15 +235,34 @@ fun DetailViewScreen(navController: NavController, id: Int) {
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Column(modifier = Modifier.padding(16.dp)) {
+                        Column(modifier = Modifier.padding(20.dp)) {
                             Text(
-                                text = "Ingredients:",
+                                text = "Ingredients",
                                 style = MaterialTheme.typography.titleMedium,
                                 modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
                             )
                             val ingrdnt = getIngredients(recipe?.analyzedInstructions)
                             Text(
                                 text = ingrdnt,
+                                style = MaterialTheme.typography.bodySmall,
+                                modifier = Modifier.padding(bottom = 4.dp)
+                            )/*recipe.instructions.forEach { ingredient ->
+                                Text(
+                                    text = "° $ingredient",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    modifier = Modifier.padding(bottom = 4.dp)
+                                )
+                            }*/
+                        }
+                        Column(modifier = Modifier.padding(20.dp)) {
+                            Text(
+                                text = "Equipment",
+                                style = MaterialTheme.typography.titleMedium,
+                                modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+                            )
+                            val equipment = getEquipment(recipe?.analyzedInstructions)
+                            Text(
+                                text = equipment,
                                 style = MaterialTheme.typography.bodySmall,
                                 modifier = Modifier.padding(bottom = 4.dp)
                             )/*recipe.instructions.forEach { ingredient ->
@@ -266,10 +286,12 @@ fun DetailViewScreen(navController: NavController, id: Int) {
                                 .weight(1f)
                         ) {
                             Text(
-                                text = "Procedure:",
+                                text = "Procedure",
                                 style = MaterialTheme.typography.titleMedium,
                                 modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
                             )
+                            Divider(modifier = Modifier
+                                .fillMaxWidth().padding(bottom = 10.dp, top = 10.dp), color = Color.Black)
                             val summaryInstructions = htmlToAnnotatedString(recipe?.instructions.toString())
                             Text(
                                 text = summaryInstructions,
