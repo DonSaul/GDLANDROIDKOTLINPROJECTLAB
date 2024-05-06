@@ -8,3 +8,9 @@ import androidx.room.PrimaryKey
 data class FavoriteEntity(
     @PrimaryKey val recipeId: Int
 )
+
+@Entity(tableName = "seenRecipes")
+data class SeenRecipeEntity(
+    @PrimaryKey
+    val recipeId: Int
+)

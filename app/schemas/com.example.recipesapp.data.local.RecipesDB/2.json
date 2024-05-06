@@ -2,10 +2,30 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "b3061e6774145e4e09f89929398fc520",
+    "identityHash": "33c8afa05bcf29cc746369113abfc937",
     "entities": [
       {
         "tableName": "favorites",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`recipeId` INTEGER NOT NULL, PRIMARY KEY(`recipeId`))",
+        "fields": [
+          {
+            "fieldPath": "recipeId",
+            "columnName": "recipeId",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "recipeId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "seenRecipes",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`recipeId` INTEGER NOT NULL, PRIMARY KEY(`recipeId`))",
         "fields": [
           {
@@ -28,7 +48,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b3061e6774145e4e09f89929398fc520')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '33c8afa05bcf29cc746369113abfc937')"
     ]
   }
 }

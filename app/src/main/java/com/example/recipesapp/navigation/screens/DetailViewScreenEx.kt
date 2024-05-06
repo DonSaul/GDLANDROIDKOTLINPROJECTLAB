@@ -117,6 +117,7 @@ fun DetailViewScreen(navController: NavController, id: Int) {
     val viewModel: RecipeByIdViewModel = hiltViewModel()
     val uiState = viewModel.state.collectAsState()
     val context = LocalContext.current
+    viewModel.addSeen(IdRecipe.idRecipe)
 
     Scaffold(
         topBar = {
