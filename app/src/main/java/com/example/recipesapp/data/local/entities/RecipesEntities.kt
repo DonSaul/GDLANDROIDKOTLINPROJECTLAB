@@ -8,3 +8,10 @@ import androidx.room.PrimaryKey
 data class FavoriteEntity(
     @PrimaryKey val recipeId: Int
 )
+
+@Entity(tableName = "search_history")
+data class SearchHistoryEntity(
+    @PrimaryKey
+    val id: Int,
+    val search:String
+)
