@@ -21,7 +21,7 @@ import com.example.recipesapp.model.Result
 @Composable
 fun RecommendedRecipeList(recipes: List<Recipe>, onRecipeClick: (Int) -> Unit) {
     Text(
-        text = "Recomendations",
+        text = "Recommendations",
         style = MaterialTheme.typography.titleMedium,
     )
     Row(

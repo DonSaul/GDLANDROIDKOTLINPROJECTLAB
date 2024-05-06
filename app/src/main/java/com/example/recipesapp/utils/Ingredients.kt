@@ -10,7 +10,7 @@ fun getIngredients( analyzedInstructions: List<Instruction?>?): String{
     for (i in 0..<steps) {
         val ingr: Int = analyzedInstructions.get(0)?.steps?.get(i)?.ingredients?.size!!
         for (j in 0..<ingr){
-            val word = analyzedInstructions.get(0)?.steps?.get(i)?.ingredients?.get(j)?.name + "\n"
+            val word = "- " + analyzedInstructions.get(0)?.steps?.get(i)?.ingredients?.get(j)?.name + "\n"
             instr += word.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
         }
     }

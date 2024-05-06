@@ -21,6 +21,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.recipesapp.R
 import com.example.recipesapp.navigation.Screen
+import com.example.recipesapp.ui.theme.LightBrown
 import com.example.recipesapp.ui.theme.LightGray
 import com.example.recipesapp.ui.theme.MediumBrown
 import com.example.recipesapp.ui.theme.RoyalGray
@@ -72,7 +73,7 @@ fun BottomNavigation(navController: NavController) {
                 Screen.Home.route -> 0
 
                 // TODO: Change the "Favorite" and "Settings" with the corresponded routes
-                "Favorite" -> 1
+                Screen.Favorite.route -> 1
                 "Settings" -> 2
                 else -> 0
             }
@@ -81,7 +82,7 @@ fun BottomNavigation(navController: NavController) {
     AnimatedNavigationBar(
         modifier = Modifier
             .height(85.dp)
-            .background(MaterialTheme.colorScheme.onSurface),
+            .background(LightBrown), // (MaterialTheme.colorScheme.errorContainer),
         selectedIndex = selectedItem,
         ballColor = Color.White,
         ballAnimation = Teleport(tween(Duration, easing = LinearEasing)),

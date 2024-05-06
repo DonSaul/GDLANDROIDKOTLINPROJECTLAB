@@ -1,15 +1,18 @@
 package com.example.recipesapp.components.recipes
 
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,8 +26,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.model.Result
@@ -39,44 +44,47 @@ fun RecipeCardFavorite(
 ) {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .height(100.dp)
             .padding(8.dp)
-            .clickable { action() }
-            .border(2.dp, BorderRecipeCard)
+            .width(160.dp).clickable { action() },
+        shape = RoundedCornerShape(8.dp),
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.background(
-                RecipeCard,
-                shape = RoundedCornerShape(10.dp)
-            )
+        Column(
+            modifier = Modifier
+                .background(RecipeCard)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(8.dp))
         ) {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(recipe.image)
-                    .crossfade(true)
-                    .build(),
+            Image(
+                painter = rememberAsyncImagePainter(
+                    ImageRequest.Builder(LocalContext.current)
+                        .data(recipe.image)
+                        .crossfade(true)
+                        .build()
+                ),
                 contentDescription = "Recipe Image",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .fillMaxHeight()
-                    .width(80.dp)
-                    .clip(RoundedCornerShape(10.dp))
+                    .height(120.dp)
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
+            )
+            Spacer(Modifier.height(4.dp))
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 60.dp)
                     .border(
                         2.dp,
                         BorderRecipeCard,
-                        RoundedCornerShape(10.dp)
-                    )
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            Column(
-                modifier = Modifier.weight(1f)
+                        shape = RoundedCornerShape(8.dp)
+                    ), // Minimum height for the text container
+                contentAlignment = Alignment.CenterStart // Centers the text vertically and aligns to start horizontally
             ) {
                 Text(
-                    text = recipe.title,
-                    style = MaterialTheme.typography.titleSmall,
-                    color = Color.Black
+                    text = recipe.title ?: "Unknown Recipe",
+                    color = Color.Black,
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.titleSmall, modifier = Modifier.padding(8.dp)
                 )
             }
         }
