@@ -22,7 +22,7 @@ interface SeenDao {
     @Query("DELETE FROM seenRecipes WHERE recipeId = :recipeId")
     suspend fun deleteSeenRecipeById(recipeId: Int)
 
-
-
+    @Query("DELETE FROM seenRecipes")
+    suspend fun deleteAllSeen()
 
 }
