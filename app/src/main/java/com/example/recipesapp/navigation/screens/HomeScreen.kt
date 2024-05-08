@@ -1,4 +1,4 @@
-
+import android.app.Application
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -40,6 +40,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import com.example.recipesapp.components.common.BottomNavigation
 import com.example.recipesapp.components.recipes.SearchBarApp
 
@@ -118,11 +119,13 @@ fun HomeScreen(
                             .background(LightBrown)
                             .padding(10.dp, 0.dp)
                     ) {
-                        if (recommendedRecipes.isNotEmpty()) {
-                            RecommendedRecipeList(recommendedRecipes) { clickedRecipeId ->
-                                onIdSelectedChange(clickedRecipeId)
-                                navController.navigate(Screen.Detail.route)
-                            }
+                        if (dataRecommendations != null) {
+                            RecommendedRecipeList(
+                                dataRecommendations.recipes,
+                                onRecipeClick = { clickedRecipeId ->
+                                    onIdSelectedChange(clickedRecipeId)
+                                    navController.navigate(Screen.Detail.route)
+                                })
                         }
                         RecipeList(data.results,
                             onRecipeClick = { clickedRecipeId ->
