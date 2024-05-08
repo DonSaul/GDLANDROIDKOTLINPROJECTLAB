@@ -1,5 +1,6 @@
 package com.example.recipesapp.viewModel
 
+import FavoritesViewModel
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
@@ -8,15 +9,22 @@ import androidx.lifecycle.viewModelScope
 import androidx.room.Room
 import com.example.recipesapp.data.local.RecipesDB
 import com.example.recipesapp.data.local.entities.FavoriteEntity
+import com.example.recipesapp.data.repository.FavoritesRepository
 import com.example.recipesapp.data.usecase.GetRandomRecipesUseCase
+import com.example.recipesapp.data.usecase.GetRecipesInformationBulkUseCase
 import com.example.recipesapp.data.usecase.GetSearchRecipesUseCase
+import com.example.recipesapp.data.usecase.GetSimilarRecipesUseCase
 import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.model.RecipesArray
 import com.example.recipesapp.model.RecipeSearch
+import com.example.recipesapp.model.Result
+import com.example.recipesapp.model.SimilarRecipe
 import com.example.recipesapp.utils.API_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,6 +32,8 @@ import javax.inject.Inject
 class RecipeViewModel @Inject constructor(
     private val getRandomRecipesUseCase: GetRandomRecipesUseCase,
     private val getSearchRecipesUseCase: GetSearchRecipesUseCase,
+    private val getSimilarRecipesUseCase: GetSimilarRecipesUseCase,
+    private val getRecipesInformationBulkUseCase: GetRecipesInformationBulkUseCase,
     application: Application
 ) : AndroidViewModel(application) {
 
@@ -44,9 +54,13 @@ class RecipeViewModel @Inject constructor(
     private val _state = MutableStateFlow<State<RecipeSearch>>(State.Loading)
     val state = _state as StateFlow<State<RecipeSearch>>
 
+
+    private val _recommendedRecipes = MutableStateFlow<List<Recipe>>(emptyList())
+    val recommendedRecipes = _recommendedRecipes.asStateFlow()
+
     init {
         viewModelScope.launch {
-            getRecipesRandom()
+            getRecommendedRecipes()
             getSearchRecipes()
         }
     }
@@ -95,6 +109,26 @@ class RecipeViewModel @Inject constructor(
             favoriteDao.insertFavorite(favoriteEntity)
         }
     }
+
+    private suspend fun getRecommendedRecipes() {
+        _stateR.tryEmit(State.Loading)
+        try {
+            val favoriteRecipes = favoriteDao.getAllFavorites().first()
+            if (favoriteRecipes.isNotEmpty()) {
+                val randomFavoriteId = favoriteRecipes.random().recipeId
+                val similarRecipes = getSimilarRecipesUseCase.invoke(randomFavoriteId, API_KEY)
+                val similarRecipeIds = similarRecipes.map { it.id.toLong() }
+                val detailedRecipes = getRecipesInformationBulkUseCase.invoke(similarRecipeIds, API_KEY)
+                _recommendedRecipes.value = detailedRecipes
+                _stateR.tryEmit(State.Success(RecipesArray(detailedRecipes)))
+            } else {
+                getRecipesRandom()
+            }
+        } catch (e: Exception) {
+            _stateR.tryEmit(State.Error(e.message.toString()))
+        }
+    }
+
 
     /*
     fun searchRecipes(tags: String = "tacos") {

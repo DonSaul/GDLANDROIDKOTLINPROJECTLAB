@@ -4,7 +4,9 @@ import com.example.recipesapp.data.RecipesApi
 import com.example.recipesapp.data.impl.RecipeRepositoryImpl
 import com.example.recipesapp.data.repository.RecipeRepository
 import com.example.recipesapp.data.impl.RecipeSearchRepositoryImpl
+import com.example.recipesapp.data.impl.RecipesSimilarImpl
 import com.example.recipesapp.data.repository.RecipeSearchRepository
+import com.example.recipesapp.data.repository.RecipesSimilar
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,5 +27,11 @@ class RepositoryModule {
     @Singleton
     fun providesRecipeSearchRepository(api: RecipesApi): RecipeSearchRepository{
         return RecipeSearchRepositoryImpl(api)
+    }
+
+    @Provides
+    @Singleton
+    fun providesRecomendationRepository(api: RecipesApi): RecipesSimilar {
+        return RecipesSimilarImpl(api)
     }
 }
