@@ -119,14 +119,16 @@ fun HomeScreen(
                             .background(LightBrown)
                             .padding(10.dp, 0.dp)
                     ) {
-                        if (dataRecommendations != null) {
+                        if (recommendedRecipes.isNotEmpty()) {
                             RecommendedRecipeList(
-                                dataRecommendations.recipes,
+                                recommendedRecipes,
                                 onRecipeClick = { clickedRecipeId ->
                                     onIdSelectedChange(clickedRecipeId)
                                     navController.navigate(Screen.Detail.route)
                                 })
                         }
+
+
                         RecipeList(data.results,
                             onRecipeClick = { clickedRecipeId ->
                                 onIdSelectedChange(clickedRecipeId)

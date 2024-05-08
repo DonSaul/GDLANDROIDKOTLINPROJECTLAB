@@ -114,20 +114,32 @@ class RecipeViewModel @Inject constructor(
         _stateR.tryEmit(State.Loading)
         try {
             val favoriteRecipes = favoriteDao.getAllFavorites().first()
+            Log.d("getRecommendedRecipes", "Favorite recipes: $favoriteRecipes")
+
             if (favoriteRecipes.isNotEmpty()) {
                 val randomFavoriteId = favoriteRecipes.random().recipeId
+                Log.d("getRecommendedRecipes", "Random favorite ID: $randomFavoriteId")
+
                 val similarRecipes = getSimilarRecipesUseCase.invoke(randomFavoriteId, API_KEY)
+                Log.d("getRecommendedRecipes", "Similar recipes: $similarRecipes")
+
                 val similarRecipeIds = similarRecipes.map { it.id.toLong() }
+                Log.d("getRecommendedRecipes", "Similar recipe IDs: $similarRecipeIds")
+
                 val detailedRecipes = getRecipesInformationBulkUseCase.invoke(similarRecipeIds, API_KEY)
+                Log.d("getRecommendedRecipes", "Detailed recipes: $detailedRecipes")
+
                 _recommendedRecipes.value = detailedRecipes
                 _stateR.tryEmit(State.Success(RecipesArray(detailedRecipes)))
             } else {
                 getRecipesRandom()
             }
         } catch (e: Exception) {
+            Log.e("getRecommendedRecipes", "Error: ${e.message}", e)
             _stateR.tryEmit(State.Error(e.message.toString()))
         }
     }
+
 
 
     /*
