@@ -9,6 +9,13 @@ data class FavoriteEntity(
     @PrimaryKey val recipeId: Int
 )
 
+@Entity(tableName = "search_history")
+data class SearchHistoryEntity(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
+    val search:String
+)
+
 @Entity(tableName = "seenRecipes")
 data class SeenRecipeEntity(
     @PrimaryKey

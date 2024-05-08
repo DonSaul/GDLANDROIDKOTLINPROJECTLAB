@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "33c8afa05bcf29cc746369113abfc937",
+    "identityHash": "45689724df9ce9ec6ecc87f3ea0cbaf0",
     "entities": [
       {
         "tableName": "favorites",
@@ -25,20 +25,26 @@
         "foreignKeys": []
       },
       {
-        "tableName": "seenRecipes",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`recipeId` INTEGER NOT NULL, PRIMARY KEY(`recipeId`))",
+        "tableName": "search_history",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `search` TEXT NOT NULL)",
         "fields": [
           {
-            "fieldPath": "recipeId",
-            "columnName": "recipeId",
+            "fieldPath": "id",
+            "columnName": "id",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "search",
+            "columnName": "search",
+            "affinity": "TEXT",
             "notNull": true
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
+          "autoGenerate": true,
           "columnNames": [
-            "recipeId"
+            "id"
           ]
         },
         "indices": [],
@@ -48,7 +54,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '33c8afa05bcf29cc746369113abfc937')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '45689724df9ce9ec6ecc87f3ea0cbaf0')"
     ]
   }
 }
