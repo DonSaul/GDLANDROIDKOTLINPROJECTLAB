@@ -3,6 +3,7 @@ package com.example.recipesapp.data
 import com.example.recipesapp.model.RecipeSearch
 import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.model.RecipesArray
+import com.example.recipesapp.model.SimilarRecipe
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -39,6 +40,14 @@ interface RetroFitService {
         @Query("apiKey") apiKey: String,
         @Query("includeNutrition") includeNutrition: Boolean = false
     ): Response<List<Recipe>>
+
+    @GET("{id}/similar")
+    suspend fun getSimilarRecipes(
+        @Path("id") recipeId: Int,
+        @Query("number") number: Int = 1,
+        @Query("limitLicense") limitLicense: Boolean = true,
+        @Query("apiKey") apiKey: String
+    ): Response<List<SimilarRecipe>>
 }
 
 object RetrofitServiceFactory {
