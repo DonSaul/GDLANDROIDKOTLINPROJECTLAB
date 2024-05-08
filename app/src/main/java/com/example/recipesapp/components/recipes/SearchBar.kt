@@ -103,7 +103,7 @@ fun SearchBarApp(placeholder: String, action: (String, String) -> Unit) {
 
                 active = false
                 if (text.isNotEmpty()) {
-                    val historySearchTemp = SearchHistoryEntity(0, text)
+                    val historySearchTemp = SearchHistoryEntity(0, search =  text)
                     searchViewModel.addHistorySearchRecord(historySearchTemp)
                     action(text, selectedItemsToString(selectedItems.value))
                 }

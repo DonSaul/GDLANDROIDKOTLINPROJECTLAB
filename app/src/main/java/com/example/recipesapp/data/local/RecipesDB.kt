@@ -10,7 +10,7 @@ import com.example.recipesapp.data.local.entities.FavoriteEntity
 import com.example.recipesapp.data.local.entities.SearchHistoryEntity
 
 
-@Database(entities = [FavoriteEntity::class, SearchHistoryEntity::class], version = 3)
+@Database(entities = [FavoriteEntity::class, SearchHistoryEntity::class], version = 4)
 abstract class RecipesDB: RoomDatabase(){
     abstract fun favoriteDao(): FavoriteDao
     abstract fun searchHistoryDao(): SearchHistoryDao

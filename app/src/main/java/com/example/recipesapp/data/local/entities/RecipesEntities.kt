@@ -11,7 +11,7 @@ data class FavoriteEntity(
 
 @Entity(tableName = "search_history")
 data class SearchHistoryEntity(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     val id: Int,
     val search:String
 )
