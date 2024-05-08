@@ -45,6 +45,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import com.example.recipesapp.components.common.BottomNavigation
 import com.example.recipesapp.components.recipes.SearchBarApp
 import kotlinx.coroutines.launch
@@ -55,7 +56,6 @@ import kotlinx.coroutines.launch
 fun HomeScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    idSelected: Int,
     onIdSelectedChange: (Int) -> Unit
 ) {
     val viewModel: RecipeViewModel = hiltViewModel()
@@ -66,6 +66,10 @@ fun HomeScreen(
     var showBottomSheet by remember { mutableStateOf(false) }
 
     Scaffold(
+        modifier = Modifier
+            .testTag(
+                "home_screen"
+            ),
         topBar = {
             SearchBarApp(placeholder = "Search recipes...",
                 action = { query, query2 -> viewModel.getSearchRecipes(query, query2) })
@@ -145,13 +149,6 @@ fun HomeScreen(
         }
     }
 }
-
-enum class ScreenEnum(val route: String, val icon: ImageVector, val title: String) {
-    Home("home", Icons.Filled.Home, Screen.Home.title),
-    Favorites("favorites", Icons.Filled.Favorite, "Favorites"),
-    Settings("settings", Icons.Filled.Settings, "Settings")
-}
-
 
 
 

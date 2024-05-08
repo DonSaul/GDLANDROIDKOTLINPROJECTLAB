@@ -8,6 +8,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.recipesapp.R
@@ -31,6 +32,9 @@ fun LoadingScreen(navController: NavController) {
             .fillMaxWidth()
             .fillMaxHeight()
             .background(LightBrown)
+            .testTag(
+                tag = "splash_screen"
+            )
     ) {
         MainAnimation(
             modifier = Modifier

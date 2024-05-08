@@ -63,6 +63,8 @@ dependencies {
     //Navigation
     val nav_version = "2.7.7"
     implementation("androidx.navigation:navigation-compose:$nav_version")
+    androidTestImplementation ("androidx.navigation:navigation-testing:$nav_version")
+    androidTestImplementation(libs.dagger.hilt.android)
 
     //Lottie Files
     implementation ("com.airbnb.android:lottie-compose:5.2.0")
@@ -106,5 +108,4 @@ dependencies {
     implementation(libs.compose.navigation)
     implementation(libs.compose.constraint)
     implementation("com.exyte:animated-navigation-bar:1.0.0")
-
 }

@@ -19,4 +19,7 @@ interface FavoriteDao {
 
     @Query("SELECT * FROM favorites")
     fun getAllFavorites(): Flow<List<FavoriteEntity>>
+
+    @Query("SELECT COUNT(*) FROM favorites")
+    fun getSizeFavorites() : Int
 }

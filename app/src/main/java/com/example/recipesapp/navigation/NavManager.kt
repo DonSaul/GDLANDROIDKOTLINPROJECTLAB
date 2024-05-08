@@ -17,8 +17,6 @@ import com.example.recipesapp.navigation.screens.SettingScreen
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SetUpNavGraph(navController: NavHostController) {
-    var mContext = LocalContext.current
-
     Column(modifier = Modifier.fillMaxSize()) {
         var idSelected by remember { mutableStateOf(0) }
         NavHost(
@@ -37,7 +35,6 @@ fun SetUpNavGraph(navController: NavHostController) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f),
-                    idSelected = idSelected,
                     navController = navController
                 ) { newIdSelected ->
                     idSelected = newIdSelected

@@ -15,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -97,6 +98,9 @@ fun BottomNavigation(navController: NavController) {
         wiggleButtonItems.forEachIndexed { index, it ->
             WiggleButton(
                 modifier = Modifier
+                    .testTag(
+                        tag = it.route,
+                    )
                     .fillMaxSize()
                     .background(MediumBrown), // Opción para hacer los botones también transparentes
                 isSelected = selectedItem == index,
