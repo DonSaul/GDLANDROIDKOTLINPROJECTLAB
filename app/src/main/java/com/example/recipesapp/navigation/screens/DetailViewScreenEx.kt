@@ -1,6 +1,9 @@
 package com.example.recipesapp.navigation.screens
 
+import FavoritesViewModel
 import android.annotation.SuppressLint
+import android.app.Application
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -8,9 +11,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -117,11 +126,22 @@ fun DetailViewScreen(navController: NavController, id: Int) {
     val viewModel: RecipeByIdViewModel = hiltViewModel()
     val uiState = viewModel.state.collectAsState()
     val context = LocalContext.current
+    val favViewModel: FavoritesViewModel = remember { FavoritesViewModel(context.applicationContext as Application) }
+
+    viewModel.addSeen(IdRecipe.idRecipe)
+    val isFav by favViewModel.isFavoriteById(IdRecipe.idRecipe).collectAsState(initial = false)
+    var isFavorite by remember {
+        mutableStateOf(
+            isFav
+        )
+    }
+    isFavorite = isFav
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Detail recipe") },
+                title = {Text(text = "Detail recipe")},
+
                 modifier = Modifier.background(LightBrown),
                 navigationIcon = {
                     IconButton(onClick = {
@@ -133,6 +153,24 @@ fun DetailViewScreen(navController: NavController, id: Int) {
                         )
                     }
                 },
+                actions = {IconButton(onClick = {
+                    if(isFavorite){
+                        favViewModel.deleteFavorite(IdRecipe.idRecipe)
+                        Toast.makeText(context,"Removed from Favorites",Toast.LENGTH_SHORT).show()
+                    }
+
+                    else{
+                        favViewModel.addFav(IdRecipe.idRecipe)
+                        Toast.makeText(context,"Added to Favorites",Toast.LENGTH_SHORT).show()
+                    }
+
+                }) {
+                    Icon(
+                        imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                        contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites",
+                        tint = if (isFavorite) Color.Red else Color.Gray
+                    )
+                }},
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color(0xFFF0E9E0)
                 ))
@@ -291,7 +329,8 @@ fun DetailViewScreen(navController: NavController, id: Int) {
                                 modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
                             )
                             Divider(modifier = Modifier
-                                .fillMaxWidth().padding(bottom = 10.dp, top = 10.dp), color = Color.Black)
+                                .fillMaxWidth()
+                                .padding(bottom = 10.dp, top = 10.dp), color = Color.Black)
                             val summaryInstructions = htmlToAnnotatedString(recipe?.instructions.toString())
                             Text(
                                 text = summaryInstructions,

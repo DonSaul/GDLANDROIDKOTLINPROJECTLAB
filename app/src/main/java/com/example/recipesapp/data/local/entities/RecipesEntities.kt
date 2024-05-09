@@ -15,3 +15,9 @@ data class SearchHistoryEntity(
     val id: Int,
     val search:String
 )
+
+@Entity(tableName = "seenRecipes")
+data class SeenRecipeEntity(
+    @PrimaryKey
+    val recipeId: Int
+)
