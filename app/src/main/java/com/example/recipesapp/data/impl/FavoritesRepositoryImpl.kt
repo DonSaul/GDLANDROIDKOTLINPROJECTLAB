@@ -14,4 +14,8 @@ class FavoritesRepositoryImpl(private val favoriteDao: FavoriteDao) : FavoritesR
     override suspend fun deleteFavorite(recipeId: Int) {
         favoriteDao.deleteFavoriteById(recipeId)
     }
+
+    override fun isInFavorite(recipeId: Int): Flow<Boolean> {
+        return favoriteDao.getFavoriteById(recipeId)
+    }
 }
