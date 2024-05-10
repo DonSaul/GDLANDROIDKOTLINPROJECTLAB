@@ -117,20 +117,29 @@ class RecipeViewModel @Inject constructor(
             Log.d("getRecommendedRecipes", "Favorite recipes: $favoriteRecipes")
 
             if (favoriteRecipes.isNotEmpty()) {
-                val randomFavoriteId = favoriteRecipes.random().recipeId
-                Log.d("getRecommendedRecipes", "Random favorite ID: $randomFavoriteId")
+                val recommendedRecipes = mutableListOf<Recipe>()
 
-                val similarRecipes = getSimilarRecipesUseCase.invoke(randomFavoriteId, API_KEY)
-                Log.d("getRecommendedRecipes", "Similar recipes: $similarRecipes")
+                for (favoriteRecipe in favoriteRecipes) {
+                    val similarRecipes = getSimilarRecipesUseCase.invoke(favoriteRecipe.recipeId, API_KEY)
+                    Log.d("getRecommendedRecipes", "Similar recipes for ${favoriteRecipe.recipeId}: $similarRecipes")
 
-                val similarRecipeIds = similarRecipes.map { it.id.toLong() }
-                Log.d("getRecommendedRecipes", "Similar recipe IDs: $similarRecipeIds")
+                    val similarRecipeIds = similarRecipes.map { it.id.toLong() }
+                    Log.d("getRecommendedRecipes", "Similar recipe IDs for ${favoriteRecipe.recipeId}: $similarRecipeIds")
 
-                val detailedRecipes = getRecipesInformationBulkUseCase.invoke(similarRecipeIds, API_KEY)
-                Log.d("getRecommendedRecipes", "Detailed recipes: $detailedRecipes")
+                    val detailedRecipes = getRecipesInformationBulkUseCase.invoke(similarRecipeIds, API_KEY)
+                    Log.d("getRecommendedRecipes", "Detailed recipes for ${favoriteRecipe.recipeId}: $detailedRecipes")
 
-                _recommendedRecipes.value = detailedRecipes
-                _stateR.tryEmit(State.Success(RecipesArray(detailedRecipes)))
+                    if (detailedRecipes.isNotEmpty()) {
+                        recommendedRecipes.addAll(detailedRecipes)
+                    }
+                }
+
+                if (recommendedRecipes.isNotEmpty()) {
+                    _recommendedRecipes.value = recommendedRecipes
+                    _stateR.tryEmit(State.Success(RecipesArray(recommendedRecipes)))
+                } else {
+                    getRecipesRandom()
+                }
             } else {
                 getRecipesRandom()
             }

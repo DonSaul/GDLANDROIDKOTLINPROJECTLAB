@@ -8,6 +8,6 @@ interface RecipesSimilar {
             recipeId: Int,
             apiKey: String,
             number: Int = 10,
-            limitLicense: Boolean = true
+            limitLicense: Boolean = false
         ): Response<List<SimilarRecipe>>
     }
