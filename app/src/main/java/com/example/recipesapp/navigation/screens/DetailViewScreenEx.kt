@@ -49,7 +49,7 @@ import com.example.recipesapp.utils.htmlToAnnotatedString
 @Composable
 @Preview
 fun RecipeDetailPreview() {
-    val recipe = Recipe(
+    /*val recipe = Recipe(
         id = 1234,
         title = "Green enchiladas",
         image = "https://img.spoonacular.com/recipes/1098304-312x231.jpg",
@@ -115,7 +115,7 @@ fun RecipeDetailPreview() {
                 )
             )
         )
-    )
+    )*/
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -284,7 +284,13 @@ fun DetailViewScreen(navController: NavController, id: Int) {
                                 text = ingrdnt,
                                 style = MaterialTheme.typography.bodySmall,
                                 modifier = Modifier.padding(bottom = 4.dp)
-                            )/*recipe.instructions.forEach { ingredient ->
+                            )
+                            Text(
+                                text = "${recipe?.nutrition?.nutrients?.get(0)?.amount}",
+                                style = MaterialTheme.typography.bodySmall,
+                                modifier = Modifier.padding(bottom = 4.dp)
+                            )
+                            /*recipe.instructions.forEach { ingredient ->
                                 Text(
                                     text = "° $ingredient",
                                     style = MaterialTheme.typography.bodySmall,
