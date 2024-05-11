@@ -43,6 +43,7 @@ data class Recipe(
 
 data class Nutrition(
     val nutrients: List<NutrientX>,
+    val ingredientsList: List<Ingredients>
 )
 data class NutrientX(
     val amount: Double,
@@ -51,11 +52,19 @@ data class NutrientX(
     val unit: String
 )
 
-data class Nutrientsss(
+data class Nutrients(
     val name: String,
     val amount: Double,
     val unit: String,
     val percentOfDailyNeeds: Double,
+)
+
+data class Ingredients(
+    val id: Int,
+    val name: String,
+    val amount: Double,
+    val unit: String,
+    //val nutrients: List<Nutrients>
 )
 
 data class Ingredient(

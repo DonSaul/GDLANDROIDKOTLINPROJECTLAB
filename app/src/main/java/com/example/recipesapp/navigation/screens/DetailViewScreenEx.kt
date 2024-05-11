@@ -279,9 +279,10 @@ fun DetailViewScreen(navController: NavController, id: Int) {
                                 style = MaterialTheme.typography.titleMedium,
                                 modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
                             )
-                            val ingrdnt = getIngredients(recipe?.analyzedInstructions)
+                            val ingrdnt = getIngredients(recipe?.nutrition?.ingredientsList)
                             Text(
-                                text = ingrdnt,
+                                //text = ingrdnt,
+                                text = "${recipe?.nutrition?.ingredientsList?.get(0)?.id}",
                                 style = MaterialTheme.typography.bodySmall,
                                 modifier = Modifier.padding(bottom = 4.dp)
                             )
