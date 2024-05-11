@@ -5,7 +5,10 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -38,6 +41,8 @@ import com.example.recipesapp.model.WinePairing
 import com.example.recipesapp.ui.theme.LightBrown
 import com.example.recipesapp.viewModel.State
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import com.example.recipesapp.R
 import com.example.recipesapp.assets.MainAnimation
 import com.example.recipesapp.components.common.BottomNavigation
@@ -127,6 +132,8 @@ fun DetailViewScreen(navController: NavController, id: Int) {
     val uiState = viewModel.state.collectAsState()
     val context = LocalContext.current
     val favViewModel: FavoritesViewModel = remember { FavoritesViewModel(context.applicationContext as Application) }
+
+    val similarRecipes = viewModel.similarRecipes.collectAsState().value
 
     viewModel.addSeen(IdRecipe.idRecipe)
     val isFav by favViewModel.isFavoriteById(IdRecipe.idRecipe).collectAsState(initial = false)
@@ -351,6 +358,46 @@ fun DetailViewScreen(navController: NavController, id: Int) {
                     )*/
                     //ListRecipes(recipes = data.results, isLoading = false)
 
+
+                    if (similarRecipes.isNotEmpty()) {
+                        Text(
+                            text = "Similar Recipes",
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp)
+                        )
+                        LazyRow(
+                            contentPadding = PaddingValues(horizontal = 16.dp),
+                            horizontalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            items(similarRecipes) { similarRecipe ->
+                                Column(
+                                    modifier = Modifier
+                                        .width(200.dp)
+                                        .clickable {
+                                            navController.navigate("detail_screen/${similarRecipe.id}")
+                                    },
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    AsyncImage(
+                                        model = similarRecipe.image,
+                                        contentDescription = similarRecipe.title,
+                                        contentScale = ContentScale.Crop,
+                                        modifier = Modifier
+                                            .size(200.dp)
+                                            .clip(RoundedCornerShape(8.dp))
+                                    )
+                                    Text(
+                                        text = similarRecipe.title,
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        modifier = Modifier.padding(top = 8.dp),
+                                        maxLines = 2,
+                                        overflow = TextOverflow.Ellipsis,
+                                        textAlign = TextAlign.Center
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

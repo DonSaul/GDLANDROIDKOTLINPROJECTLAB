@@ -120,17 +120,25 @@ class RecipeViewModel @Inject constructor(
                 val recommendedRecipes = mutableListOf<Recipe>()
 
                 for (favoriteRecipe in favoriteRecipes) {
+                    if (recommendedRecipes.size >= 10) {
+                        break
+                    }
+
                     val similarRecipes = getSimilarRecipesUseCase.invoke(favoriteRecipe.recipeId, API_KEY)
                     Log.d("getRecommendedRecipes", "Similar recipes for ${favoriteRecipe.recipeId}: $similarRecipes")
 
                     val similarRecipeIds = similarRecipes.map { it.id.toLong() }
                     Log.d("getRecommendedRecipes", "Similar recipe IDs for ${favoriteRecipe.recipeId}: $similarRecipeIds")
 
-                    val detailedRecipes = getRecipesInformationBulkUseCase.invoke(similarRecipeIds, API_KEY)
-                    Log.d("getRecommendedRecipes", "Detailed recipes for ${favoriteRecipe.recipeId}: $detailedRecipes")
+                    if (similarRecipeIds.isNotEmpty()) {
+                        val detailedRecipes = getRecipesInformationBulkUseCase.invoke(similarRecipeIds, API_KEY)
+                        Log.d("getRecommendedRecipes", "Detailed recipes for ${favoriteRecipe.recipeId}: $detailedRecipes")
 
-                    if (detailedRecipes.isNotEmpty()) {
-                        recommendedRecipes.addAll(detailedRecipes)
+                        if (detailedRecipes.isNotEmpty()) {
+                            recommendedRecipes.addAll(detailedRecipes)
+                        }
+                    } else {
+                        Log.d("getRecommendedRecipes", "No similar recipe IDs found for ${favoriteRecipe.recipeId}")
                     }
                 }
 

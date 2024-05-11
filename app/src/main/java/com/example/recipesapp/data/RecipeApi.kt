@@ -43,8 +43,8 @@ interface RecipesApi {
     @GET("{id}/similar")
     suspend fun getSimilarRecipes(
         @Path("id") recipeId: Int,
-        @Query("number") number: Int = 1,
-        @Query("limitLicense") limitLicense: Boolean = true,
+        @Query("number") number: Int = 10,
+        @Query("limitLicense") limitLicense: Boolean = false,
         @Query("apiKey") apiKey: String
     ): Response<List<SimilarRecipe>>
 }
