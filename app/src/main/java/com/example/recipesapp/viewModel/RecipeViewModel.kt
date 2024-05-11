@@ -136,16 +136,15 @@ class RecipeViewModel @Inject constructor(
 
                         if (detailedRecipes.isNotEmpty()) {
                             recommendedRecipes.addAll(detailedRecipes)
+                            _recommendedRecipes.value = recommendedRecipes
+                            _stateR.tryEmit(State.Success(RecipesArray(recommendedRecipes)))
                         }
                     } else {
                         Log.d("getRecommendedRecipes", "No similar recipe IDs found for ${favoriteRecipe.recipeId}")
                     }
                 }
 
-                if (recommendedRecipes.isNotEmpty()) {
-                    _recommendedRecipes.value = recommendedRecipes
-                    _stateR.tryEmit(State.Success(RecipesArray(recommendedRecipes)))
-                } else {
+                if (recommendedRecipes.isEmpty()) {
                     getRecipesRandom()
                 }
             } else {
