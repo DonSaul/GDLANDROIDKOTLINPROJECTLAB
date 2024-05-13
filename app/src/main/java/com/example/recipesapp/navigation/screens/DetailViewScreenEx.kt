@@ -38,12 +38,15 @@ import com.example.recipesapp.model.WinePairing
 import com.example.recipesapp.ui.theme.LightBrown
 import com.example.recipesapp.viewModel.State
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import com.example.recipesapp.R
 import com.example.recipesapp.assets.MainAnimation
 import com.example.recipesapp.components.common.BottomNavigation
+import com.example.recipesapp.components.recipes.TableCell
 import com.example.recipesapp.navigation.Screen
 import com.example.recipesapp.utils.getEquipment
 import com.example.recipesapp.utils.getIngredients
+import com.example.recipesapp.utils.*
 import com.example.recipesapp.utils.htmlToAnnotatedString
 
 @Composable
@@ -285,18 +288,6 @@ fun DetailViewScreen(navController: NavController, id: Int) {
                                 style = MaterialTheme.typography.bodySmall,
                                 modifier = Modifier.padding(bottom = 4.dp)
                             )
-                            Text(
-                                text = "${recipe?.nutrition?.nutrients?.get(0)?.amount}",
-                                style = MaterialTheme.typography.bodySmall,
-                                modifier = Modifier.padding(bottom = 4.dp)
-                            )
-                            /*recipe.instructions.forEach { ingredient ->
-                                Text(
-                                    text = "° $ingredient",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    modifier = Modifier.padding(bottom = 4.dp)
-                                )
-                            }*/
                         }
                         Column(modifier = Modifier.padding(20.dp)) {
                             Text(
@@ -309,13 +300,7 @@ fun DetailViewScreen(navController: NavController, id: Int) {
                                 text = equipment,
                                 style = MaterialTheme.typography.bodySmall,
                                 modifier = Modifier.padding(bottom = 4.dp)
-                            )/*recipe.instructions.forEach { ingredient ->
-                                Text(
-                                    text = "° $ingredient",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    modifier = Modifier.padding(bottom = 4.dp)
-                                )
-                            }*/
+                            )
                         }
                     }
 
@@ -342,20 +327,44 @@ fun DetailViewScreen(navController: NavController, id: Int) {
                                 text = summaryInstructions,
                                 style = MaterialTheme.typography.bodySmall,
                                 modifier = Modifier.padding(bottom = 4.dp)
-                            )/*recipe?.instructions.forEach{ instruction ->
-                                Text(
-                                    text = "${instruction}",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    modifier = Modifier.padding(bottom = 4.dp)
-                                )
-                            }*/
+                            )
                         }
-                    }/*val data = (uiState.value as State.Success).data
-                    Text(
-                        text = "Recipes ${data?.id} \n ${data?.image}",
-                        modifier = Modifier.padding(start = 16.dp, top = 16.dp)
-                    )*/
-                    //ListRecipes(recipes = data.results, isLoading = false)
+                    }
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .fillMaxWidth()
+                                .weight(1f)
+                        ) {
+                            Text(
+                                text = "Nutritional information",
+                                style = MaterialTheme.typography.titleMedium,
+                                modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+                            )
+                            Divider(modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 10.dp, top = 10.dp), color = Color.Black)
+                            val nutriName = getNutrientName(recipe?.nutrition)
+                            val nutriAmount = getNutrientAmount(recipe?.nutrition)
+                            val nutriUnit = getNutrientUnits(recipe?.nutrition)
+
+                            Row( Modifier.fillMaxWidth()) {
+                                TableCell(text = "Concept", weight = 3f, fontWeight = FontWeight.Bold)
+                                TableCell(text = "Quantity", weight = 1.5f, fontWeight = FontWeight.Bold)
+                                TableCell(text = "Units", weight = 1f, fontWeight = FontWeight.Bold)
+                            }
+                            Row( Modifier.fillMaxWidth()) {
+                                TableCell(text = nutriName, weight = 3f, null)
+                                TableCell(text = nutriAmount, weight = 1.5f, null)
+                                TableCell(text = nutriUnit, weight = 1f, null)
+                            }
+                        }
+                    }
 
                 }
             }
