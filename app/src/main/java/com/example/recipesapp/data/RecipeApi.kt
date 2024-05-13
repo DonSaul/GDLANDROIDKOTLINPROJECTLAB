@@ -22,7 +22,8 @@ interface RecipesApi {
     @GET("{id}/information")
     suspend fun getRecipeInformation(
         @Path("id") recipeId: Int,
-        @Query("apiKey") apiKey: String
+        @Query("apiKey") apiKey: String,
+        @Query("includeNutrition") includeNutrition: Boolean = true
     ): Response<Recipe>
 
     @GET("random")
