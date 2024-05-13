@@ -3,6 +3,7 @@ package com.example.recipesapp.data
 import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.model.RecipeSearch
 import com.example.recipesapp.model.RecipesArray
+import com.example.recipesapp.model.SimilarRecipe
 import com.example.recipesapp.utils.API_KEY
 import retrofit2.Response
 import retrofit2.http.GET
@@ -39,4 +40,12 @@ interface RecipesApi {
         @Query("apiKey") apiKey: String,
         @Query("includeNutrition") includeNutrition: Boolean = false
     ): Response<List<Recipe>>
+
+    @GET("{id}/similar")
+    suspend fun getSimilarRecipes(
+        @Path("id") recipeId: Int,
+        @Query("number") number: Int = 10,
+        @Query("limitLicense") limitLicense: Boolean = false,
+        @Query("apiKey") apiKey: String
+    ): Response<List<SimilarRecipe>>
 }

@@ -5,9 +5,10 @@ import com.example.recipesapp.data.repository.RecipesInformationBulk
 import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.model.RecipesArray
 import retrofit2.Response
+import javax.inject.Inject
 
-class RecipesInformationBulkImpl(private val api: RetroFitService) : RecipesInformationBulk {
-
+class RecipesInformationBulkImpl @Inject constructor(private val api: RetroFitService) : RecipesInformationBulk {
+    // ...
     override suspend fun getRecipesInformationBulk(
         ids: List<Long>,
         apiKey: String,
