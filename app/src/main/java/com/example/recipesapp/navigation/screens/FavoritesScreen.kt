@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.example.recipesapp.ui.theme.*
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.recipesapp.R
@@ -102,6 +104,14 @@ fun FavoritesScreen(
             }
             else {
                 Row(modifier = Modifier.fillMaxSize().background(LightBrown)) {
+                    if(recipes.isEmpty()){
+                        Column(modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally) {
+                            Spacer(modifier = Modifier.height(35.dp))
+                            Text(text = "Empty list", color = Color.LightGray, fontStyle = FontStyle.Italic)
+                        }
+
+                    }
                     FavoriteList(
                         recipes = recipes,
                         onRecipeClick = { recipeId ->
