@@ -13,6 +13,7 @@ import com.example.recipesapp.data.local.entities.SearchHistoryEntity
 
 
 @Database(entities = [FavoriteEntity::class,SeenRecipeEntity::class, SearchHistoryEntity::class], version = 2)
+@TypeConverters(Converters::class)
 abstract class RecipesDB: RoomDatabase(){
     abstract fun favoriteDao(): FavoriteDao
 

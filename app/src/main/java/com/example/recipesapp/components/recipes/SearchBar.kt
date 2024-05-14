@@ -56,8 +56,8 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
-import com.example.recipesapp.data.HistoryEx
-import com.example.recipesapp.data.HistorySearch
+//import com.example.recipesapp.data.HistoryEx
+//import com.example.recipesapp.data.HistorySearch
 import com.example.recipesapp.data.local.entities.SearchHistoryEntity
 import com.example.recipesapp.ui.theme.MediumBrown
 import kotlinx.coroutines.launch

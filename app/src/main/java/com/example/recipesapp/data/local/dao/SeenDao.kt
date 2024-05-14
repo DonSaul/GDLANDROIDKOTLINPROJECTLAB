@@ -16,7 +16,7 @@ interface SeenDao {
     @Query("SELECT * FROM seenRecipes WHERE recipeId = :recipeId")
     suspend fun getSeenRecipeById(recipeId: Int): SeenRecipeEntity?
 
-    @Query("SELECT * FROM seenRecipes")
+    @Query("SELECT * FROM seenRecipes ORDER BY date desc")
     fun getSeenRecipes(): Flow<List<SeenRecipeEntity>>
 
     @Query("DELETE FROM seenRecipes WHERE recipeId = :recipeId")

@@ -15,6 +15,7 @@ import androidx.navigation.navArgument
 import com.example.recipesapp.navigation.screens.DetailViewScreen
 import com.example.recipesapp.navigation.screens.LoadingScreen
 import com.example.recipesapp.navigation.screens.SettingScreen
+import com.example.recipesapp.navigation.screens.seenHistoryScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,8 +68,13 @@ fun SetUpNavGraph(navController: NavHostController) {
                     navController = navController
                 )
             }
-            composable(route = Screen.Settings.route) {
-                SettingScreen(navController = navController)
+            composable(route = Screen.History.route) {
+                seenHistoryScreen(
+                    onRecipeClick = {recipeId ->
+                        idSelected = recipeId
+                        navController.navigate(Screen.Detail.route)
+                    },
+                    navController = navController)
             }
         }
     }

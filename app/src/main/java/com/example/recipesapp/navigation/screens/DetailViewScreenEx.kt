@@ -48,6 +48,7 @@ import com.example.recipesapp.R
 import com.example.recipesapp.assets.MainAnimation
 import com.example.recipesapp.components.common.BottomNavigation
 import com.example.recipesapp.components.recipes.TableCell
+import com.example.recipesapp.data.lastScreen
 import com.example.recipesapp.navigation.Screen
 import com.example.recipesapp.utils.getEquipment
 import com.example.recipesapp.utils.getIngredients
@@ -156,7 +157,7 @@ fun DetailViewScreen(navController: NavController, id: Int) {
                 navigationIcon = {
                     IconButton(onClick = {
                         navController.popBackStack()
-                        navController.navigate(Screen.Home.route)
+                        navController.navigate(lastScreen.lastScreen)
                     }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack, contentDescription = "Back"

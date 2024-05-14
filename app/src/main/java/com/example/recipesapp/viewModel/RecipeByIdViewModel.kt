@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -68,7 +69,7 @@ class RecipeByIdViewModel @Inject constructor(
 
     fun addSeen(recipeId: Int){
         viewModelScope.launch {
-            val seenEntity = SeenRecipeEntity(recipeId)
+            val seenEntity = SeenRecipeEntity(recipeId, Date())
             seenDao.insertSeen(seenEntity)
             println( seenDao.getSeenRecipes().toList().forEach{ println("Hola" + it) })
 

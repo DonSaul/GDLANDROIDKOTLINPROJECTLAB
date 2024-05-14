@@ -3,6 +3,7 @@ package com.example.recipesapp.data.local.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.Date
 
 @Entity(tableName = "favorites")
 data class FavoriteEntity(
@@ -19,5 +20,6 @@ data class SearchHistoryEntity(
 @Entity(tableName = "seenRecipes")
 data class SeenRecipeEntity(
     @PrimaryKey
-    val recipeId: Int
+    val recipeId: Int,
+    val date: Date
 )
