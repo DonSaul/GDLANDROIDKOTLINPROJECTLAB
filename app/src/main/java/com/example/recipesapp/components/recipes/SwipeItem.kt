@@ -33,7 +33,8 @@ fun SwipeItem(
         confirmValueChange = {
             if (it == DismissValue.DismissedToStart) {
                 onAddFavorite(currentItem)
-               // show = false
+                show = false
+                Toast.makeText(context, "¡Agregado a favoritos!", Toast.LENGTH_SHORT).show()
                 return@rememberDismissState true
             } else false
         }, positionalThreshold = { 0f }
