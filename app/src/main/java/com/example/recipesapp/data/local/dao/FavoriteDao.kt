@@ -14,8 +14,8 @@ interface FavoriteDao {
     @Query("DELETE FROM favorites WHERE recipeId = :recipeId")
     suspend fun deleteFavoriteById(recipeId: Int)
 
-    @Query("SELECT EXISTS (SELECT 1 FROM favorites WHERE recipeId = :recipeId)")
-    fun getFavoriteById(recipeId: Int): Flow<Boolean>
+    @Query("SELECT * FROM favorites WHERE recipeId = :recipeId")
+    suspend fun getFavoriteById(recipeId: Int): FavoriteEntity?
 
     @Query("SELECT * FROM favorites")
     fun getAllFavorites(): Flow<List<FavoriteEntity>>
