@@ -1,14 +1,16 @@
 package com.example.recipesapp.data
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import com.example.recipesapp.navigation.Screen
+
 object IdRecipe{
     var idRecipe = 0
 }
 
-object HistoryEx{
-    private var historySr = HistorySearch(search = "Taco")
-    var HistoryList =  mutableListOf(historySr,HistorySearch(search = "Fish"))
-}
 
-data class HistorySearch(
-    val search: String
-)
+object lastScreen {
+    var lastScreen = Screen.Home.route
+}

@@ -54,7 +54,7 @@ import com.example.recipesapp.viewModel.State
 @Composable
 @Preview
 fun RecipeDetailPreview() {
-    val recipe = Recipe(
+    /*val recipe = Recipe(
         id = 1234,
         title = "Green enchiladas",
         image = "https://img.spoonacular.com/recipes/1098304-312x231.jpg",
@@ -120,7 +120,7 @@ fun RecipeDetailPreview() {
                     link = "https://example.com/white-wine"
                 )
             )
-    ))
+    ))*/
     //RecipeDetail(recipe = recipe)
 }
 

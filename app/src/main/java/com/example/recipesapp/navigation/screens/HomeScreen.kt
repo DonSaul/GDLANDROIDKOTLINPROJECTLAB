@@ -1,4 +1,4 @@
-
+import android.app.Application
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,15 +29,10 @@ import com.example.recipesapp.ui.theme.LightBrown
 //import com.example.recipesapp.components.recipes.SearchBar
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,9 +40,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import com.example.recipesapp.components.common.BottomNavigation
 import com.example.recipesapp.components.recipes.SearchBarApp
-import kotlinx.coroutines.launch
+import com.example.recipesapp.data.lastScreen
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -64,6 +60,7 @@ fun HomeScreen(
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
+    lastScreen.lastScreen = Screen.Home.route
 
     Scaffold(
         topBar = {
@@ -115,21 +112,25 @@ fun HomeScreen(
 
                 is State.Success -> {
                     val data = (uiState.value as State.Success).data
-                    val dataRecommendations = when (val currentRecommendationState = uiStateR) {
-                        is State.Success -> currentRecommendationState.data
-                        else -> null
+                    val recommendedRecipes = when (val currentRecommendationState = uiStateR) {
+                        is State.Success -> currentRecommendationState.data.recipes
+                        else -> emptyList()
                     }
                     Column(
                         modifier = Modifier
                             .background(LightBrown)
                             .padding(10.dp, 0.dp)
                     ) {
-                        if (dataRecommendations != null) {
-                            RecommendedRecipeList(dataRecommendations.recipes, onRecipeClick = { clickedRecipeId ->
-                                onIdSelectedChange(clickedRecipeId)
-                                navController.navigate(Screen.Detail.route)
-                            })
+                        if (recommendedRecipes.isNotEmpty()) {
+                            RecommendedRecipeList(
+                                recommendedRecipes,
+                                onRecipeClick = { clickedRecipeId ->
+                                    onIdSelectedChange(clickedRecipeId)
+                                    navController.navigate(Screen.Detail.route)
+                                })
                         }
+
+
                         RecipeList(data.results,
                             onRecipeClick = { clickedRecipeId ->
                                 onIdSelectedChange(clickedRecipeId)
