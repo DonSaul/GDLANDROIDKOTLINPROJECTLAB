@@ -43,6 +43,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import com.example.recipesapp.components.common.BottomNavigation
 import com.example.recipesapp.components.recipes.SearchBarApp
+import com.example.recipesapp.data.lastScreen
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,6 +60,7 @@ fun HomeScreen(
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
+    lastScreen.lastScreen = Screen.Home.route
 
     Scaffold(
         topBar = {

@@ -56,7 +56,7 @@ class HistoryViewModel(application: Application): AndroidViewModel(application) 
 
 
 
-    fun deleteAllHistory(recipeId: Int) {
+    fun deleteAllHistory() {
         viewModelScope.launch {
             historyRepository.deleteAllHistory()
         }

@@ -13,3 +13,4 @@ class SearchHistoryImpl @Inject constructor(private val searchHistoryDao: Search
     override suspend fun addSearch(searchHistoryEntity: SearchHistoryEntity) = searchHistoryDao.insertSearchHistory(searchHistoryEntity)
     override suspend fun getSearchHistory() = searchHistoryDao.getSearchHistory().flowOn(Dispatchers.IO).conflate()
 }
+
