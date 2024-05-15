@@ -142,7 +142,7 @@ fun SearchBarApp(placeholder: String, action: (String, String) -> Unit) {
 
         ) {
             if (history.isEmpty()) {
-                Text("No hay historial disponible", modifier = Modifier.padding(16.dp))
+                Text("No history available", modifier = Modifier.padding(16.dp))
             } else {
                 LazyColumn {
                     items(history.size) { item ->
