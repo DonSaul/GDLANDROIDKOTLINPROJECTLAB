@@ -3,16 +3,13 @@ package com.example.recipesapp.data
 import com.example.recipesapp.model.RecipeSearch
 import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.model.RecipesArray
-import com.example.recipesapp.model.SimilarRecipe
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
-import javax.inject.Singleton
 
-@Singleton
 interface RetroFitService {
 
     @GET("{ltype}")
@@ -42,14 +39,6 @@ interface RetroFitService {
         @Query("apiKey") apiKey: String,
         @Query("includeNutrition") includeNutrition: Boolean = false
     ): Response<List<Recipe>>
-
-    @GET("{id}/similar")
-    suspend fun getSimilarRecipes(
-        @Path("id") recipeId: Int,
-        @Query("number") number: Int = 10,
-        @Query("limitLicense") limitLicense: Boolean = false,
-        @Query("apiKey") apiKey: String
-    ): Response<List<SimilarRecipe>>
 }
 
 object RetrofitServiceFactory {

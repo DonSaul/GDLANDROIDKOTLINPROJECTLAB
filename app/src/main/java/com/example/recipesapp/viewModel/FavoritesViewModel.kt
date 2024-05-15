@@ -12,7 +12,6 @@ import com.example.recipesapp.data.repository.FavoritesRepository
 import com.example.recipesapp.data.usecase.GetRecipesInformationBulkUseCase
 import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.utils.API_KEY
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -40,9 +39,6 @@ class FavoritesViewModel(
     private val _recipes = MutableStateFlow<List<Recipe>>(emptyList())
     val recipes = _recipes.asStateFlow()
 
-    private val _recipeID = MutableStateFlow<FavoriteEntity?>(null)
-    var recipeID = _recipeID.asStateFlow()
-
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
@@ -53,6 +49,7 @@ class FavoritesViewModel(
             getAllFavorites()
         }
     }
+
 
 
     fun deleteFavorite(recipeId: Int) {
@@ -85,18 +82,6 @@ class FavoritesViewModel(
             } finally {
                 _isLoading.value = false // Establecer el estado de carga en false después de la llamada a la API
             }
-        }
-    }
-
-    fun isFavoriteById(id: Int): Flow<Boolean>{
-        val fr = favoritesRepository.isInFavorite(id)
-        return fr
-    }
-
-    fun addFav(recipeId: Int){
-        viewModelScope.launch {
-            val favoriteEntity = FavoriteEntity(recipeId)
-            favoriteDao.insertFavorite(favoriteEntity)
         }
     }
 }

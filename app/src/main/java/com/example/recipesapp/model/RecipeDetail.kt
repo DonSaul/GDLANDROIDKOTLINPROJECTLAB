@@ -37,34 +37,7 @@ data class Recipe(
     val dishTypes: List<String>,
     val extendedIngredients: List<Ingredient>,
     val summary: String,
-    val winePairing: WinePairing,
-    val nutrition: Nutrition
-)
-
-data class Nutrition(
-    val nutrients: List<NutrientX>,
-    val ingredients: List<Ingredients>
-)
-data class NutrientX(
-    val amount: Double,
-    val name: String,
-    val percentOfDailyNeeds: Double,
-    val unit: String
-)
-
-data class Nutrients(
-    val name: String,
-    val amount: Double,
-    val unit: String,
-    val percentOfDailyNeeds: Double,
-)
-
-data class Ingredients(
-    val id: Int,
-    val name: String,
-    val amount: Double,
-    val unit: String,
-    //val nutrients: List<Nutrients>
+    val winePairing: WinePairing
 )
 
 data class Ingredient(

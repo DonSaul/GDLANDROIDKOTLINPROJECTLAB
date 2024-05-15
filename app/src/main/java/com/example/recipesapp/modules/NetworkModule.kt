@@ -3,7 +3,6 @@ package com.example.recipesapp.modules
 import android.content.Context
 import com.example.recipesapp.RecipesApp
 import com.example.recipesapp.data.RecipesApi
-import com.example.recipesapp.data.RetroFitService
 import com.example.recipesapp.utils.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -58,11 +57,5 @@ class NetworkModule {
     @Singleton
     fun provideRecipeApi(retrofit: Retrofit): RecipesApi {
         return retrofit.create(RecipesApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideRetroFitService(retrofit: Retrofit): RetroFitService {
-        return retrofit.create(RetroFitService::class.java)
     }
 }
