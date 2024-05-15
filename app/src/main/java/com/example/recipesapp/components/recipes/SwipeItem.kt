@@ -34,7 +34,7 @@ fun SwipeItem(
             if (it == DismissValue.DismissedToStart) {
                 onAddFavorite(currentItem)
                 show = false
-                Toast.makeText(context, "¡Agregado a favoritos!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Added to favorites!", Toast.LENGTH_SHORT).show()
                 return@rememberDismissState true
             } else false
         }, positionalThreshold = { 0f }
