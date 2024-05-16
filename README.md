@@ -6,6 +6,11 @@
 Application based on preferences and personal taste of users who love to cook and share recipes. Designed to enhance your cooking experience, whether you’re a seasoned chef, a kitchen novice or simply want to taste and find new dishes form around the world.<br/>
 With user-friendly features, personalized recommendations let's you find and share your favorite dishes!
 
+[![Material Design](https://img.shields.io/badge/Material_Design-757575?style=flat&logo=material-design&logoColor=white)](https://material.io/)
+[![Kotlin](https://img.shields.io/badge/Kotlin-007396?style=flat&logo=kotlin&logoColor=white)](https://kotlinlang.org/)
+[![Pull request](https://img.shields.io/badge/PRs-welcome-success?style=flat)](https://github.com/DonSaul/CLKOTLINPROJECT/pulls)
+[![RESTful API](https://img.shields.io/badge/RESTful_API-005571?style=flat&logo=http&logoColor=white)](https://restfulapi.net/)
+
 
 ## Installation
 
