@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "951a396f3529c1deb272cdac1e2d61f2",
+    "identityHash": "e910b0c4f656d2f0da135dc8a0795ce3",
     "entities": [
       {
         "tableName": "favorites",
@@ -26,11 +26,17 @@
       },
       {
         "tableName": "seenRecipes",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`recipeId` INTEGER NOT NULL, PRIMARY KEY(`recipeId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`recipeId` INTEGER NOT NULL, `date` INTEGER NOT NULL, PRIMARY KEY(`recipeId`))",
         "fields": [
           {
             "fieldPath": "recipeId",
             "columnName": "recipeId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -74,7 +80,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '951a396f3529c1deb272cdac1e2d61f2')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e910b0c4f656d2f0da135dc8a0795ce3')"
     ]
   }
 }
