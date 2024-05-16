@@ -11,12 +11,33 @@ With user-friendly features, personalized recommendations let's you find and sha
 [![Pull request](https://img.shields.io/badge/PRs-welcome-success?style=flat)](https://github.com/DonSaul/CLKOTLINPROJECT/pulls)
 [![RESTful API](https://img.shields.io/badge/RESTful_API-005571?style=flat&logo=http&logoColor=white)](https://restfulapi.net/)
 
+## Features
 
-## Installation
+### UI
 
-TargetSDK = 34 <br/>
-MinimumSDK = 24 <br/>
-jvm (Java Version) = 1.8
+| Feature                                                               | Description                                                                         |
+|-----------------------------------------------------------------------|-------------------------------------------------------------------------------------|
+| Search Recipes                                                        | User can introduce any dishes name and will search for all similar dishes        |
+| Recommendations                                                       | Will show similar recipes based on users search history                            |
+| Add favorite recipes                                                  | Users can save any recipe into the local database for future queries                |
+| History search                                                        | Users will see their previously searches                                            |
+
+
+## Trello
+You can find our trello project here https://trello.com/b/FMwbYTqw
+
+
+## Requirements
+### Prerequisites
+
+Ensure you have the following installed:
+
+| Android             | Version |
+|---------------------|---------|
+| TargetSDK           | 34      |
+| MinimumSDK          | 24      |
+| jvm (Java Version)  | 1.8     |
+| Room version        | 2.6.1   |
 
 ## Dependencies 
 ```kotlin
@@ -57,7 +78,20 @@ jvm (Java Version) = 1.8
 The app gets the data from spoonacular API (https://spoonacular.com/food-api) <br/>
 Free subscription (150 points per day)
 
-## Usage - MainScreen
+
+## Installation
+
+To install and run the Recipe Android App, follow these steps:
+
+Clone the repository using the following command:
+```
+git clone https://github.com/DonSaul/GDLANDROIDKOTLINPROJECTLAB.git
+```
+Open the project in Android Studio
+Connect an Android device or use an Emulator.
+Build and run the app using Android Studio.
+
+## MainScreen
 First screen called after opening App. Required paramenters, modifier, Navigation Controller and Id change action
 ```kotlin
 @OptIn(ExperimentalMaterial3Api::class)
